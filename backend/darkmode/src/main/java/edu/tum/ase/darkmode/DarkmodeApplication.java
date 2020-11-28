@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import static java.time.temporal.ChronoUnit.SECONDS;
-
 import java.time.LocalDateTime;
+
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 @SpringBootApplication
 @RestController
 public class DarkmodeApplication {
-    private static final Logger logger = LoggerFactory.getLogger(DarkmodeApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(DarkmodeApplication.class);
 
     private boolean darkModeEnabled = false;
     private LocalDateTime lastToggled;
@@ -29,9 +29,9 @@ public class DarkmodeApplication {
         if (!isToggleOnCoolDown()) {
             darkModeEnabled = !darkModeEnabled;
             lastToggled = LocalDateTime.now();
-            logger.debug("Toggled dark mode.");  // TODO JH: logging not working
+            log.debug("Toggled dark mode.");  // TODO JH: logging not working
         } else {
-            logger.debug("Dark mode toggle on cool down.");
+            log.debug("Dark mode toggle on cool down.");
         }
     }
 
