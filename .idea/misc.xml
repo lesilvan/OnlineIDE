@@ -5,6 +5,7 @@
       <list>
         <option value="$PROJECT_DIR$/backend/darkmode/pom.xml" />
         <option value="$PROJECT_DIR$/backend/project/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/compiler/pom.xml" />
       </list>
     </option>
   </component>
