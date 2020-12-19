@@ -43,6 +43,7 @@ public class DarkmodeApplication {
     private boolean isToggleOnCoolDown() {
         if (lastToggled == null) {
             lastToggled = LocalDateTime.now();
+
             return false;
         } else {
             LocalDateTime now = LocalDateTime.now();
