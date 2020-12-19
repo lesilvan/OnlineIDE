@@ -1,13 +1,13 @@
-package edu.tum.ase.darkmode;
+package edu.tum.ase.project;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DarkmodeApplicationTests {
+class ProjectApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }
