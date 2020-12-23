@@ -28,13 +28,5 @@ public class ProjectApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // TODO: only runs tests, to be removed
-        //log.info("DataSource = " + dataSource);
-        //Project project = projectService.createProject(new Project("test-project"));
-        //log.info("ID of saved project = " + project.getId());
-        //Project p = projectService.findByName("test-project");
-        //log.info("ID of queried project = " + p.getId());
-        //List<Project> projects = projectService.getProjects();
-        //log.info("Length of project list = " + projects.size());
     }
 }

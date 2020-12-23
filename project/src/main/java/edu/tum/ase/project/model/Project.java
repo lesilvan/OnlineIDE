@@ -1,13 +1,10 @@
 package edu.tum.ase.project.model;
 
-import edu.tum.ase.project.service.ProjectSourceFileService;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
-import org.aspectj.util.FileUtil;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.io.File;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
@@ -24,6 +21,7 @@ public class Project {
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<ProjectSourceFile> sourceFiles = Collections.emptySet();
 
     protected Project() {

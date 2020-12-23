@@ -42,7 +42,6 @@ public class ProjectService {
     public Project removeSourceFile(Project project, ProjectSourceFile sourceFile) {
         project.removeSourceFile(sourceFile);
         project = projectRepository.save(project);
-        System.out.println("pp: " + project.getSourceFiles());
         sourceFileRepository.delete(sourceFile);
 
         return project;

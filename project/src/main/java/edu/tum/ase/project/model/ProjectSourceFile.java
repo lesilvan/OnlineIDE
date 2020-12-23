@@ -1,11 +1,6 @@
 package edu.tum.ase.project.model;
 
-import edu.tum.ase.project.model.Project;
-
-import edu.tum.ase.project.service.ProjectSourceFileService;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.BufferedOutputStream;

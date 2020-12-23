@@ -52,31 +52,5 @@ public class ProjectSourceFileApplication implements CommandLineRunner {
         System.out.println(p.getId());
         ProjectSourceFile sf = projectSourceFileController.create(new ProjectSourceFile("hello.c"));
         p = projectController.addSourceFile(sf, p.getId());
-        p = projectController.removeSourceFile(sf, p.getId());
-//
-//        // query project and newly added source file
-//        p = projectService.findById(p.getId());
-//        Set<ProjectSourceFile> sourceFiles = p.getSourceFiles();
-//        log.info("Queried Project # source files: " + p.getSourceFiles().size());
-//        log.info("Queried # source files: " + projectSourceFileService.findByProjectId(p.getId()).size());
-//        log.info("---------------------------------------");
-//
-//        // rename project
-//        p = projectService.findById(p.getId());
-//        p.setName("NEW-PROJECT");
-//        projectService.update(p);
-//        p = projectService.findById(p.getId());
-//        log.info("Project renamed: " + p.getName());
-//        log.info("Renamed project # source files: " + projectSourceFileService.findByProject(p).size());
-//        log.info("---------------------------------------");
-//
-//        // rename source file in project
-//
-//        // delete project and its source file dir
-//        projectService.deleteById(p.getId());
-//        p.deleteSourceFileDir();
-//        log.info("Project deleted.");
-//        log.info("# source files: " + projectSourceFileService.findAll().size());
-//        log.info("---------------------------------------");
     }
 }
