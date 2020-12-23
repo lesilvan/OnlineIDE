@@ -4,6 +4,8 @@ import edu.tum.ase.project.model.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * Note that Spring provides a variety of Repository abstractions, JpaRepository is
  * technology-specific
@@ -12,5 +14,4 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, String> {
-    Project findByName(String name);
 }
