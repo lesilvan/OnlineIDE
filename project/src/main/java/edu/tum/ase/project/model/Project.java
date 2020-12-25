@@ -20,8 +20,7 @@ public class Project {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<ProjectSourceFile> sourceFiles = Collections.emptySet();
 
     protected Project() {
@@ -39,6 +38,7 @@ public class Project {
         for (ProjectSourceFile sf : getSourceFiles()) {
             if (sf.getId().equals(sourceFile.getId())) {
                 isAlready = true;
+                break;
             }
         }
         if (!isAlready) {

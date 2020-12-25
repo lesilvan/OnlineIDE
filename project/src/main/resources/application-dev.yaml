@@ -1,0 +1,12 @@
+# uses in code predefined in-memory hikari database (no need to specify login credentials here)
+spring:
+  datasource:
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: admin
+    password: test
+  jpa:
+    hibernate.ddl-auto: create-drop
+    properties.hibernate:
+      dialect: org.hibernate.dialect.H2Dialect
+      jdbc.lob.non_contextual_creation: true
