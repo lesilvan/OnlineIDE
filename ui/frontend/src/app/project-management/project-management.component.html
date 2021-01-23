@@ -1,0 +1,38 @@
+<a mat-raised-button color="accent" routerLink="/home" routerLinkActive="active">Logout</a>
+<h2 class="mat-display-2">Project Management</h2>
+<!--
+<button mat-stroked-button color="primary" (click)="createProject()">Add Project</button>
+<button (click)="deleteProject(project)" mat-stroked-button color="warn">Delete</button>
+-->
+<button mat-stroked-button color="primary" (click)="addProject()">Add Project</button>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">>
+  <!-- ID Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let project"> {{project.id}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let project"> {{project.name}} </td>
+  </ng-container>
+
+  <!-- Open/Delete Column -->
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let project" class="action-link">
+      <a (click)="editProject(project)" mat-stroked-button color="basic">Edit name</a>
+      <a mat-stroked-button color="primary" routerLink="/home" routerLinkActive="active">Open</a>
+      <button (click)="deleteProject(project)" mat-stroked-button color="warn">Delete</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<input [(ngModel)]="newProjectName">
+
+
