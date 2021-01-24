@@ -1,0 +1,24 @@
+.btn-group button {
+  border: 1px solid black;
+  cursor: pointer; /* Pointer/hand icon */
+  width: 90%; /* Set a width if needed */
+  display: block; /* Make the buttons appear below each other */
+  vertical-align: top;
+}
+.btn-group a {
+  border: 1px solid black;
+  cursor: pointer; /* Pointer/hand icon */
+  width: 40%; /* Set a width if needed */
+  display: inline-block;
+  vertical-align: top;
+}
+.btn-group button:not(:last-child) {
+  border-bottom: none; /* Prevent double borders */
+}
+
+.btn-group button:hover {
+  background-color: deeppink;
+}
+.btn-group a:hover {
+  background-color: deeppink;
+}

@@ -16,4 +16,19 @@ export class EditorComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  addNewFile() {
+
+  }
+
+  shareProject() {
+
+  }
+
+  saveProject() {
+
+  }
+
+  compile() {
+
+  }
 }
