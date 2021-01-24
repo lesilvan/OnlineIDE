@@ -24,7 +24,7 @@
     <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td mat-cell *matCellDef="let project" class="action-link">
       <a (click)="editProject(project)" mat-stroked-button color="basic">Edit name</a>
-      <a mat-stroked-button color="primary" routerLink="/home" routerLinkActive="active">Open</a>
+      <a [routerLink]="['/ide', project.id]" mat-stroked-button color="primary" routerLink="/home" routerLinkActive="active">Open</a>
       <button (click)="deleteProject(project)" mat-stroked-button color="warn">Delete</button>
     </td>
   </ng-container>
