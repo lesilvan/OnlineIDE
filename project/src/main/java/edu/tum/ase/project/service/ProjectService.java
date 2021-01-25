@@ -61,10 +61,17 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    public void delete(Project project) {
-        projectRepository.delete(project);
-        for(ProjectSourceFile sf : project.getSourceFiles()) {
-            sf.deleteSourceFile();
+    public boolean delete(Project project) {
+        try {
+            projectRepository.delete(project);
+            for (ProjectSourceFile sf : project.getSourceFiles()) {
+                sf.deleteSourceFile();
+            }
+            return true;
+        }
+        catch (Exception e){
+            // Project could not be safely deleted
+            return false;
         }
     }
 }
