@@ -3,6 +3,7 @@ import {Project} from "../project";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogBoxComponent} from "../dialog-box/dialog-box.component";
+import {ProjectListService} from "../project-list.service";
 
 @Component({
   selector: 'app-project-management',
@@ -11,17 +12,17 @@ import {DialogBoxComponent} from "../dialog-box/dialog-box.component";
 })
 export class ProjectManagementComponent implements OnInit {
   newProjectName: any;
-  projects: Project[] = [
-    {id:1345345345, name: "Great Project"},
-    {id:4535345342, name: "Hullapl"}
-  ];
+  projects: Project[];
   displayedColumns: string[] = ['id', 'name', "action"];
-  dataSource = new MatTableDataSource<Project>(this.projects);
+  dataSource: MatTableDataSource<Project>;
 
 
-  constructor(public dialog: MatDialog) {}
+
+  constructor(public dialog: MatDialog, private projectListService: ProjectListService) {}
 
   ngOnInit(): void {
+    this.getProjectList()
+    this.dataSource = new MatTableDataSource<Project>(this.projects);
   }
 
   openDialog(project: Project, action: string): any {
@@ -40,7 +41,7 @@ export class ProjectManagementComponent implements OnInit {
       }
     })
   }
-  // Functions initializing the correct dialog
+  // Functions initializing dialog correctly
   addProject(): void{
     let project = new Project();
     this.openDialog(project, "Create new");
@@ -53,20 +54,48 @@ export class ProjectManagementComponent implements OnInit {
   deleteProject(project: Project): void{
     this.openDialog(project, "Delete");
   }
+
   // Functions taking care about manipulated data (storage)
-  // TODO: Store and Retrieve information from database
   addProjectData(project): void {
-    this.projects.push(project);
-    this.dataSource.data = this.projects;
+    this.projectListService.addProject(project)
+      .subscribe((project: Project) => {
+          console.log(project),
+          this.getProjectList()
+        ;}
+      );
   }
+
   updateProjectData(project): void {
-    this.projects.filter((value,key) => {
+    /*this.projects.filter((value,key) => {
       if (value.id == project.id) {value.name = project.name;}
     });
-    this.dataSource.data = this.projects;
+    this.dataSource.data = this.projects;*/
+    this.projectListService.renameProject(project)
+      .subscribe((project: Project) => {
+          console.log(project),
+          this.getProjectList()
+        ;}
+      );
   }
+
   deleteProjectData(project: Project): void{
     this.projects = this.projects.filter(obj => obj.id !== project.id);
     this.dataSource.data = this.projects;
+    this.projectListService.deleteProject(project)
+      .subscribe(isDeleted => {
+        console.log(isDeleted),
+          this.getProjectList()
+        ;}
+      );
+  }
+
+  // Functions for database interaction
+  getProjectList(): void{
+    this.projectListService.getProjectList()
+      .subscribe(projects => {
+          this.projects = projects,
+          this.dataSource.data = projects
+        ;}
+      );
   }
 }
