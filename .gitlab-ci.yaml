@@ -1,0 +1,23 @@
+image: maven:3.6.3-openjdk-15
+
+stages:
+  - build
+  - test
+  - package
+
+build:
+  stage: build
+  script:
+    - cd compiler && mvn clean compile
+    - cd darkmode && mvn clean compile
+    - cd project && mvn clean compile
+
+test:
+  stage: test
+  script: mvn test
+
+package:
+  stage: package
+  script: mvn package
+  variables:
+    MAVEN_OPTS: "-DskipTests=true"
