@@ -57,4 +57,8 @@ public class SourceCode {
     public void setCompilable(boolean compilable) {
         this.compilable = compilable;
     }
+
+    public boolean getCompilable() {
+        return this.compilable;
+    }
 }
