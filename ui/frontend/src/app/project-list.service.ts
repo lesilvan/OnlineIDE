@@ -12,6 +12,7 @@ export class ProjectListService {
   private projectCreationUrl: string;
   private projectRenameUrl: string;
   private projectDeleteUrl: string;
+  private projectUrl: string
 
 
     constructor(private http: HttpClient) {
@@ -56,6 +57,15 @@ export class ProjectListService {
       this.projectDeleteUrl,
       {}
     );
+  }
 
+  /** GET project information by id */
+  getProject(id: number): Observable<Project>{
+    this.projectUrl = this.projectsUrl + String(id);
+    console.log(this.projectUrl);
+    return this.http.get<Project>(
+      this.projectUrl,
+      {observe:'body', responseType:'json'}
+    );
   }
 }

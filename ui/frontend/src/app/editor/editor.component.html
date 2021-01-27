@@ -27,9 +27,10 @@
         Share Project
       </button>
     </div>
+    <h1 class="mat-h1" >{{project.name}}</h1>
 
     <mat-action-list>
-      <button mat-list-item *ngFor="let file of files$ | async">
+      <button (click)="openSourceFileInEditor(file.id)" mat-list-item *ngFor="let file of project.sourceFiles">
         {{ file.name }}
       </button>
     </mat-action-list>

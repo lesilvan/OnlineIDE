@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { SourceFile } from '../source-file';
 import { SourceFileService } from '../source-file.service';
+import {ProjectListService} from "../project-list.service";
+import {Project} from "../project";
 
 @Component({
   selector: 'app-editor',
@@ -13,20 +15,22 @@ import { SourceFileService } from '../source-file.service';
 export class EditorComponent implements OnInit {
   editorOptions = { theme: 'vs-dark', language: 'javascript' };
   code: string = 'function x() {\nconsole.log("Hello world!");\n}';
-
-  files$: Observable<SourceFile[]>;
+  project_id: number;
+  project: Project;
 
   constructor(
     private route: ActivatedRoute,
-    private sourceFileService: SourceFileService
+    private sourceFileService: SourceFileService,
+    private projectListService: ProjectListService
   ) {}
 
   ngOnInit(): void {
-    this.files$ = this.route.paramMap.pipe(
-      switchMap((params) => {
-        return this.sourceFileService.getSourceFiles();
-      })
-    );
+    // Gets the current project_id from the routing
+    this.route.params.subscribe(params => {
+      this.project_id = params['id'];
+    })
+    // Get project information
+    this.getProject(this.project_id);
   }
 
   createNewFile() {}
@@ -36,4 +40,15 @@ export class EditorComponent implements OnInit {
   saveProject() {}
 
   compile() {}
+
+  // Functions for database interaction
+  getProject(id: number): void {
+    this.projectListService.getProject(id).subscribe((project) => {
+      (this.project = project, console.log("Project loaded:", project));
+    });
+  }
+
+  openSourceFileInEditor(id: number) {
+
+  }
 }
