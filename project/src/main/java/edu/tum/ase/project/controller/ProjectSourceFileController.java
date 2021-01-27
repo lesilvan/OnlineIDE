@@ -5,6 +5,7 @@ import edu.tum.ase.project.service.ProjectSourceFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -28,6 +29,15 @@ public class ProjectSourceFileController {
     @GetMapping("{id}")
     public ProjectSourceFile read(@PathVariable(name = "id") String id) {
         return service.findById(id);
+    }
+
+    @GetMapping(value = "{id}/get-sourcecode", produces = "text/html; charset=UTF-8")
+    @ResponseBody
+    public String getSourceCode(@PathVariable(name = "id") String id) {
+        ProjectSourceFile sf = service.findById(id);
+        String sourceCode = service.getSourceCode(sf);
+
+        return sourceCode;
     }
 
     // updates

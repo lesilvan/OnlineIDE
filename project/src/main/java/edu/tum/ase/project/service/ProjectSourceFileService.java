@@ -32,7 +32,7 @@ public class ProjectSourceFileService {
         return repo.save(sourceFile);
     }
 
-    public ProjectSourceFile findById(String id) {
+    public ProjectSourceFile findById(String id) throws IllegalAccessError {
         Optional<ProjectSourceFile> sf = repo.findById(id);
 
         if (sf.isPresent()) {
@@ -40,6 +40,10 @@ public class ProjectSourceFileService {
         } else {
             throw new IllegalAccessError();
         }
+    }
+
+    public String getSourceCode(ProjectSourceFile sf) {
+        return sf.provideSourceCode();
     }
 
     public List<ProjectSourceFile> findAll() {

@@ -3,10 +3,12 @@ package edu.tum.ase.project.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Entity
 @Table(name = "project_source_files")
@@ -36,7 +38,7 @@ public class ProjectSourceFile {
             FileOutputStream fos = new FileOutputStream(f, false);
             BufferedOutputStream bos = new BufferedOutputStream(fos);
 
-            byte[] bytes = sourceCode.getBytes(StandardCharsets.UTF_16);
+            byte[] bytes = sourceCode.getBytes(StandardCharsets.UTF_8);
             bos.write(bytes);
 
             bos.close();
@@ -69,5 +71,19 @@ public class ProjectSourceFile {
 
     public String getFilePath() {
         return "./tmp/" + id;
+    }
+
+    public String provideSourceCode() {
+        String sourceCode;
+        // Try reading in, if not, then file hasn't been created yet => sourcecode is empty
+        try {
+            sourceCode = new String(Files.readAllBytes(Paths.get(getFilePath())));
+            return sourceCode;
+        } catch(IOException e) {
+            e.printStackTrace();
+            sourceCode = "";
+        }
+
+        return sourceCode;
     }
 }

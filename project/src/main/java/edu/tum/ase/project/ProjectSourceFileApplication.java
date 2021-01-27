@@ -15,6 +15,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.sql.DataSource;
+import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -49,8 +50,14 @@ public class ProjectSourceFileApplication implements CommandLineRunner {
         log.info("---------------------------------------");
 
         // add source file to project
-        System.out.println(p.getId());
         ProjectSourceFile sf = projectSourceFileController.create(new ProjectSourceFile("hello.c"));
         p = projectController.addSourceFile(sf, p.getId());
+        Set<ProjectSourceFile> sfs = p.getSourceFiles();
+
+        for(ProjectSourceFile sourceFile : sfs) {
+            projectSourceFileController.updateSourceCode("#include <stdio.h>\n\tint main() { printf(\"Hello World!\"); }", sf.getId());
+            projectSourceFileController.rename("new.c", sf.getId());
+            String sourceCode = projectSourceFileController.getSourceCode(sf.getId());
+        }
     }
 }
