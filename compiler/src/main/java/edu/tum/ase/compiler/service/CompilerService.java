@@ -49,7 +49,7 @@ public class CompilerService {
 
             for (Diagnostic<?> diagnostic : diagnostics.getDiagnostics()) {
                 String message = "%s%n %s: %s%n".formatted(diagnostic.getSource(), diagnostic.getCode(), diagnostic.getMessage(null));
-                sourceCode.setStderr(sourceCode.getStderr() + message);
+                sourceCode.setStderr("compile unsuccessful\n" + sourceCode.getStderr() + message);
             }
         }
 
@@ -70,6 +70,7 @@ public class CompilerService {
 
         // define writers that listen to proc's i/o
         BufferedReader stderrReader = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+        BufferedReader stdoutReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 
         // try catch, could be that proc gets interrupted
         try {
@@ -78,11 +79,13 @@ public class CompilerService {
             // check if compilation was successful
             if (exitCode == 0) {
                 sourceCode.setCompilable(true);
+                String stdout = stdoutReader.lines().collect(Collectors.joining("\n"));
+                sourceCode.setStdout("compile successful\n" + stdout);
             } else {
                 sourceCode.setCompilable(false);
 
                 String stderr = stderrReader.lines().collect(Collectors.joining("\n"));
-                sourceCode.setStderr(stderr);
+                sourceCode.setStderr("compile unsuccessful\n" + stderr);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -96,7 +99,6 @@ public class CompilerService {
 
     private String buildGCCCommand(File sourceFile) {
         String outputPath = outDir + "/" + sourceFile.getName().substring(0, sourceFile.getName().length() - 2);
-        System.out.println("out: " + outputPath);
         String cmd = String.format("gcc %s -o %s", sourceFile.getAbsolutePath(), outputPath);
 
         return cmd;
