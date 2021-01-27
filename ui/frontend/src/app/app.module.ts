@@ -1,0 +1,59 @@
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule, Routes } from '@angular/router';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { AppComponent } from './app.component';
+import { DialogBoxComponent } from './dialog-box/dialog-box.component';
+import { EditorComponent } from './editor/editor.component';
+import { HomeComponent } from './home/home.component';
+import { ProjectManagementComponent } from './project-management/project-management.component';
+import { StartupComponent } from './startup/startup.component';
+
+const appRoutes: Routes = [
+  { path: 'startup', component: StartupComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'manage-projects', component: ProjectManagementComponent },
+  { path: 'ide/:id', component: EditorComponent },
+  { path: '', redirectTo: '/startup', pathMatch: 'full' },
+];
+@NgModule({
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    ProjectManagementComponent,
+    StartupComponent,
+    DialogBoxComponent,
+    EditorComponent,
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: true } // debugging purposes only
+    ),
+    MonacoEditorModule.forRoot(),
+    FormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatDialogModule,
+    MatGridListModule,
+    MatListModule,
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}

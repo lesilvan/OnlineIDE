@@ -1,0 +1,42 @@
+.container {
+  height: 100%;
+
+  display: flex;
+}
+
+.side-bar {
+  width: 240px;
+  min-width: 240px;
+}
+
+.side-bar-button-group {
+  display: flex;
+}
+
+.mat-button-base {
+  margin: 3px;
+}
+
+.side-bar-button-group .mat-button-base {
+  width: 100%;
+}
+
+.main-view {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.editor {
+  height: 100%;
+}
+
+ngx-monaco-editor {
+  height: 100%;
+}
+
+.compile-output {
+  height: 20%;
+  max-height: 200px;
+}
