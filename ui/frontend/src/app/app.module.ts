@@ -1,31 +1,31 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HomeComponent } from './home/home.component';
-import {MatButtonModule} from '@angular/material/button';
-import {Route, RouterModule, Routes} from "@angular/router";
-import { ProjectManagementComponent } from './project-management/project-management.component';
-import { StartupComponent } from './startup/startup.component';
-import {FormsModule} from "@angular/forms";
-import {MatTableModule} from "@angular/material/table";
-import {MatPaginatorModule} from "@angular/material/paginator";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatDialogModule} from "@angular/material/dialog";
+import { RouterModule, Routes } from '@angular/router';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { AppComponent } from './app.component';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { EditorComponent } from './editor/editor.component';
-import { MonacoEditorModule} from "ngx-monaco-editor";
-import {HttpClientModule} from "@angular/common/http";
+import { HomeComponent } from './home/home.component';
+import { ProjectManagementComponent } from './project-management/project-management.component';
+import { StartupComponent } from './startup/startup.component';
 
 const appRoutes: Routes = [
-  { path: 'startup', component: StartupComponent},
-  { path: 'home', component: HomeComponent},
-  { path: 'manage-projects', component: ProjectManagementComponent},
-  { path: 'ide/:id', component: EditorComponent},
-  { path: '', redirectTo: '/startup', pathMatch: 'full'}
-]
+  { path: 'startup', component: StartupComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'manage-projects', component: ProjectManagementComponent },
+  { path: 'ide/:id', component: EditorComponent },
+  { path: '', redirectTo: '/startup', pathMatch: 'full' },
+];
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +42,7 @@ const appRoutes: Routes = [
     MatButtonModule,
     RouterModule.forRoot(
       appRoutes,
-      {enableTracing: true} // debugging purposes only
+      { enableTracing: true } // debugging purposes only
     ),
     MonacoEditorModule.forRoot(),
     FormsModule,
@@ -50,9 +50,10 @@ const appRoutes: Routes = [
     MatPaginatorModule,
     MatFormFieldModule,
     MatDialogModule,
-    MatGridListModule
+    MatGridListModule,
+    MatListModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

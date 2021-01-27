@@ -4,5 +4,17 @@
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
+  },
+  "/sourcefiles/*": {
+    "target": "http://localhost:8081",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  },
+  "/compile/*": {
+    "target": "http://localhost:8082",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
   }
 }

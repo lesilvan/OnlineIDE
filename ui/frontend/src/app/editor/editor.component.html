@@ -1,27 +1,51 @@
-<mat-grid-list cols="6" rowHeight="100px">
-      <!-- Project tile -->
-  <mat-grid-tile [colspan]="1" [rowspan]="6" [style.background]="'black'">
-    <div class="btn-group">
-      <a [routerLink]="['/manage-projects']" mat-raised-button color="primary" routerLink="/home" routerLinkActive="active">Back</a>
-      <a [routerLink]="['/home']" mat-raised-button color="primary" routerLink="/home" routerLinkActive="active">Logout</a>
-      <button (click)="addNewFile()" mat-raised-button color="basic">New File</button>
-      <button (click)="shareProject()" mat-raised-button color="basic">Share Project</button>
+<!-- Project tile -->
+<div class="container">
+  <div class="side-bar">
+    <div class="side-bar-button-group">
+      <a
+        [routerLink]="['/manage-projects']"
+        mat-raised-button
+        color="primary"
+        routerLink="/home"
+        routerLinkActive="active"
+        >Back</a
+      >
+      <a
+        [routerLink]="['/home']"
+        mat-raised-button
+        color="primary"
+        routerLink="/home"
+        routerLinkActive="active"
+        >Logout</a
+      >
     </div>
-  </mat-grid-tile>
-  <mat-grid-tile [colspan]="5" [rowspan]="1"[style.background]="'bluegrey'">
-    <div class="btn-group2">
-      <button (click)="saveProject()" mat-stroked-button color="primary">Save</button>
-      <button (click)="compile()" mat-stroked-button color="primary">Compile</button>
+    <div class="side-bar-button-group">
+      <button (click)="createNewFile()" mat-raised-button color="basic">
+        New File
+      </button>
+      <button (click)="shareProject()" mat-raised-button color="basic">
+        Share Project
+      </button>
     </div>
-  </mat-grid-tile>
-  <mat-grid-tile [colspan]="5" [rowspan]="3">
-    <ngx-monaco-editor
-      style="width: 100%" [options]="editorOptions" [(ngModel)]="code">
-    </ngx-monaco-editor>
-  </mat-grid-tile>
-  <mat-grid-tile [colspan]="5" [rowspan]="2"[style.background]="'red'">Compiler Output
-  </mat-grid-tile>
 
-</mat-grid-list>
+    <mat-action-list>
+      <button mat-list-item *ngFor="let file of files$ | async">
+        {{ file.name }}
+      </button>
+    </mat-action-list>
+  </div>
 
+  <div class="main-view">
+    <div>
+      <button (click)="saveProject()" mat-button color="primary">Save</button>
+      <button (click)="compile()" mat-button color="primary">Compile</button>
+    </div>
 
+    <div class="editor">
+      <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="code">
+      </ngx-monaco-editor>
+    </div>
+
+    <div class="compile-output">compile output</div>
+  </div>
+</div>

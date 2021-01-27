@@ -1,68 +1,68 @@
-import {Component, OnInit} from '@angular/core';
-import {Project} from "../project";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatDialog} from "@angular/material/dialog";
-import {DialogBoxComponent} from "../dialog-box/dialog-box.component";
-import {ProjectListService} from "../project-list.service";
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
+import { Project } from '../project';
+import { ProjectListService } from '../project-list.service';
 
 @Component({
   selector: 'app-project-management',
   templateUrl: './project-management.component.html',
-  styleUrls: ['./project-management.component.css']
+  styleUrls: ['./project-management.component.css'],
 })
 export class ProjectManagementComponent implements OnInit {
   newProjectName: any;
   projects: Project[];
-  displayedColumns: string[] = ['id', 'name', "action"];
+  displayedColumns: string[] = ['id', 'name', 'action'];
   dataSource: MatTableDataSource<Project>;
 
-
-
-  constructor(public dialog: MatDialog, private projectListService: ProjectListService) {}
+  constructor(
+    public dialog: MatDialog,
+    private projectListService: ProjectListService
+  ) {}
 
   ngOnInit(): void {
-    this.getProjectList()
+    this.getProjectList();
     this.dataSource = new MatTableDataSource<Project>(this.projects);
   }
 
   openDialog(project: Project, action: string): any {
     const dialogRef = this.dialog.open(DialogBoxComponent, {
-      width:"250px",
-      data: {action: action, project: project}
+      width: '250px',
+      data: { action: action, project: project },
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
-      if(result.event == 'Create new'){
+      if (result.event == 'Create new') {
         this.addProjectData(result.project);
-      }else if(result.event == 'Rename'){
+      } else if (result.event == 'Rename') {
         this.updateProjectData(result.project);
-      }else if(result.event == 'Delete'){
+      } else if (result.event == 'Delete') {
         this.deleteProjectData(result.project);
       }
-    })
+    });
   }
   // Functions initializing dialog correctly
-  addProject(): void{
+  addProject(): void {
     let project = new Project();
-    this.openDialog(project, "Create new");
+    this.openDialog(project, 'Create new');
   }
 
-  editProject(project: Project): void{
-    this.openDialog(project, "Rename");
+  editProject(project: Project): void {
+    this.openDialog(project, 'Rename');
   }
 
-  deleteProject(project: Project): void{
-    this.openDialog(project, "Delete");
+  deleteProject(project: Project): void {
+    this.openDialog(project, 'Delete');
   }
 
   // Functions taking care about manipulated data (storage)
   addProjectData(project): void {
-    this.projectListService.addProject(project)
+    this.projectListService
+      .addProject(project)
       .subscribe((project: Project) => {
-          console.log(project),
-          this.getProjectList()
-        ;}
-      );
+        console.log(project), this.getProjectList();
+      });
   }
 
   updateProjectData(project): void {
@@ -70,32 +70,25 @@ export class ProjectManagementComponent implements OnInit {
       if (value.id == project.id) {value.name = project.name;}
     });
     this.dataSource.data = this.projects;*/
-    this.projectListService.renameProject(project)
+    this.projectListService
+      .renameProject(project)
       .subscribe((project: Project) => {
-          console.log(project),
-          this.getProjectList()
-        ;}
-      );
+        console.log(project), this.getProjectList();
+      });
   }
 
-  deleteProjectData(project: Project): void{
-    this.projects = this.projects.filter(obj => obj.id !== project.id);
+  deleteProjectData(project: Project): void {
+    this.projects = this.projects.filter((obj) => obj.id !== project.id);
     this.dataSource.data = this.projects;
-    this.projectListService.deleteProject(project)
-      .subscribe(isDeleted => {
-        console.log(isDeleted),
-          this.getProjectList()
-        ;}
-      );
+    this.projectListService.deleteProject(project).subscribe((isDeleted) => {
+      console.log(isDeleted), this.getProjectList();
+    });
   }
 
   // Functions for database interaction
-  getProjectList(): void{
-    this.projectListService.getProjectList()
-      .subscribe(projects => {
-          this.projects = projects,
-          this.dataSource.data = projects
-        ;}
-      );
+  getProjectList(): void {
+    this.projectListService.getProjectList().subscribe((projects) => {
+      (this.projects = projects), (this.dataSource.data = projects);
+    });
   }
 }
