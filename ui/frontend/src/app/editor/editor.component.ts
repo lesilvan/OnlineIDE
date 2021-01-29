@@ -51,15 +51,13 @@ export class EditorComponent implements OnInit {
     // Get interval timer to fetch dark mode button
     this.timerSubscription = timer(0, 3000).subscribe(
       (value) => {
-        console.log(value, new Date());
         this.darkModeService.getDarkModeStatus().subscribe(
           (darkModeEnabled) => {
             if (darkModeEnabled) {
-              monaco.editor.setTheme("vs-dark");
+              window.monaco.editor.setTheme("vs-dark");
             } else {
-              monaco.editor.setTheme("vs");
+              window.monaco.editor.setTheme("vs");
             }
-            console.log(darkModeEnabled);
           }
         );
       }
@@ -133,6 +131,14 @@ export class EditorComponent implements OnInit {
       .subscribe((sourceFile) => {
         // Save initially loaded version of sourceFile
         this.loadedSourceFile = sourceFile;
+        // Check fileExtension (if neither c nor java -> show that it is not compilable)
+        let fileExtension = this.getFileExtension(sourceFile.name);
+        if ((fileExtension != "c") && (fileExtension != "java")) {
+          this.displayedCompilerMessage = "Files with File extension '." + fileExtension +
+            "' can not be compiled! (Supported are .c and .java files.)";
+        } else {
+          this.displayedCompilerMessage = "";
+        }
         // Try to get sourceCode
         this.getSourceCode(sourceFile);
       });
@@ -236,7 +242,7 @@ export class EditorComponent implements OnInit {
   }
 
   private setLanguageHighlighting(sourceFile: SourceFile) {
-    var fileExtension = this.getFileExtension(sourceFile.name);
+    let fileExtension = this.getFileExtension(sourceFile.name);
     if (fileExtension == "c") {
       monaco.editor.setModelLanguage(window.monaco.editor.getModels()[0],"c");
     } else if (fileExtension == "java") {
