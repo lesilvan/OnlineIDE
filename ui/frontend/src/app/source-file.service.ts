@@ -8,21 +8,51 @@ import { SourceFile } from './source-file';
 })
 export class SourceFileService {
   private sourceFilesUrl: string;
-  private createSourceFileUrl: string;
 
   constructor(private http: HttpClient) {
     this.sourceFilesUrl = '/sourcefiles/';
-    this.createSourceFileUrl = 'create/';
   }
 
-  getSourceFiles(): Observable<SourceFile[]> {
-    return this.http.get<SourceFile[]>(this.sourceFilesUrl);
-  }
-
-  createSourceFile(file: SourceFile): Observable<SourceFile> {
+  /** POST create sourceFile */
+  createSourceFile(sourceFile: SourceFile): Observable<SourceFile> {
     return this.http.post<SourceFile>(
-      this.sourceFilesUrl + this.createSourceFileUrl,
-      file
+      this.sourceFilesUrl + 'create',
+      sourceFile
     );
   }
+
+  /** GET load sourceFile */
+  loadSourceFile(id: number): Observable<SourceFile> {
+    return this.http.get<SourceFile>(
+      this.sourceFilesUrl + String(id),
+      {}
+    );
+  }
+
+  /** POST rename sourceFile */
+  updateSourceFile(sourceFile: SourceFile): Observable<SourceFile> {
+    return this.http.post<SourceFile>(
+      this.sourceFilesUrl + String(sourceFile.id) + '/rename',
+      sourceFile.name
+    );
+  }
+
+  /** GET get sourcecode */
+  getSourceCode(sourceFile: SourceFile) {
+    return this.http.get(
+      this.sourceFilesUrl + String(sourceFile.id) + '/sourcecode',
+      {responseType: "text"}
+    );
+  }
+
+  /** POST update sourcecode */
+  saveSourceCode(sourceFile: SourceFile, sourceCode: string): Observable<SourceFile> {
+    return this.http.post<SourceFile>(
+      this.sourceFilesUrl + String(sourceFile.id) + '/update-sourcecode',
+      sourceCode,
+      {responseType: "json"}
+    );
+  }
+
+
 }
