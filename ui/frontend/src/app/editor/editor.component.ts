@@ -17,7 +17,7 @@ import {DarkModeService} from "../dark-mode.service";
   styleUrls: ['./editor.component.css'],
 })
 export class EditorComponent implements OnInit {
-  editorOptions = { theme: 'vs-dark', language: 'javascript' };
+  editorOptions = { theme: 'vs'};
   project_id: number;
   project: Project = new Project();
 
@@ -163,7 +163,6 @@ export class EditorComponent implements OnInit {
   }
 
 
-
   /* Functions for database interaction */
   // Project database
   private getProject(id: number): void {
@@ -222,13 +221,7 @@ export class EditorComponent implements OnInit {
         this.sourceCode.code = code;
         this.sourceCode.fileName = sourceFile.name;
         // Select correct language highlighting
-        // TODO: Set language of syntax highlighting according to fileending
-        /*if (this.getFileExtension(sourceFile.name) == "c") {
-          this.editorOptions.language = "objective-c";
-        } else if (this.getFileExtension(sourceFile.name) == "java") {
-          this.editorOptions.language = "java";
-        }
-        console.log(this.editorOptions.language);*/
+        this.setLanguageHighlighting(sourceFile);
         this.savingDisabled = false;
       });
   }
@@ -240,5 +233,14 @@ export class EditorComponent implements OnInit {
 
   getFileExtension(filename: string): string {
     return filename.substring(filename.lastIndexOf('.')+1, filename.length) || filename;
+  }
+
+  private setLanguageHighlighting(sourceFile: SourceFile) {
+    var fileExtension = this.getFileExtension(sourceFile.name);
+    if (fileExtension == "c") {
+      monaco.editor.setModelLanguage(window.monaco.editor.getModels()[0],"c");
+    } else if (fileExtension == "java") {
+      monaco.editor.setModelLanguage(window.monaco.editor.getModels()[0],"java");
+    }
   }
 }
