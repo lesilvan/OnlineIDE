@@ -1,7 +1,3 @@
-before_script:
-    - ls
-    - docker build -t mvn-gcc:latest .
-
 stages:
   - build
   - test
@@ -10,15 +6,8 @@ stages:
 build:
   stage: build
   script:
-    - cd compiler
-    - docker run --rm mvn-gcc mvn clean compile
-    - cd ..
-    - cd dark-mode
-    - mvn clean compile
-    - cd ..
-    - cd project
-    - mvn clean compile
-    - cd ..
+    - docker build -t compiler-service -f compiler
+    - docker run --rm compiler-service mvn clean compile
 
 test:
   stage: test
