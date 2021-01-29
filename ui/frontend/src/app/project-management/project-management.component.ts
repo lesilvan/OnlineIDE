@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
+import { DialogBoxProjectComponent } from '../dialog-box-project/dialog-box-project.component';
 import { Project } from '../project';
 import { ProjectListService } from '../project-list.service';
 
@@ -27,7 +27,7 @@ export class ProjectManagementComponent implements OnInit {
   }
 
   openDialog(project: Project, action: string): any {
-    const dialogRef = this.dialog.open(DialogBoxComponent, {
+    const dialogRef = this.dialog.open(DialogBoxProjectComponent, {
       width: '250px',
       data: { action: action, project: project },
     });
@@ -61,7 +61,8 @@ export class ProjectManagementComponent implements OnInit {
     this.projectListService
       .addProject(project)
       .subscribe((project: Project) => {
-        console.log(project), this.getProjectList();
+        console.log(project);
+        this.getProjectList();
       });
   }
 
@@ -73,7 +74,8 @@ export class ProjectManagementComponent implements OnInit {
     this.projectListService
       .renameProject(project)
       .subscribe((project: Project) => {
-        console.log(project), this.getProjectList();
+        console.log(project);
+        this.getProjectList();
       });
   }
 
@@ -81,14 +83,16 @@ export class ProjectManagementComponent implements OnInit {
     this.projects = this.projects.filter((obj) => obj.id !== project.id);
     this.dataSource.data = this.projects;
     this.projectListService.deleteProject(project).subscribe((isDeleted) => {
-      console.log(isDeleted), this.getProjectList();
+      console.log(isDeleted);
+      this.getProjectList();
     });
   }
 
   // Functions for database interaction
   getProjectList(): void {
     this.projectListService.getProjectList().subscribe((projects) => {
-      (this.projects = projects), (this.dataSource.data = projects);
+      this.projects = projects;
+      this.dataSource.data = projects;
     });
   }
 }

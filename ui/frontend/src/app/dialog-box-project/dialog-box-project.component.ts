@@ -3,23 +3,23 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {Project} from "../project";
 import {NONE_TYPE} from "@angular/compiler";
 
-export interface DialogData {
+export interface DialogDataProject {
   project: Project;
   action: string;
 }
 
 @Component({
   selector: 'app-dialog-box',
-  templateUrl: './dialog-box.component.html',
-  styleUrls: ['./dialog-box.component.css']
+  templateUrl: './dialog-box-project.component.html',
+  styleUrls: ['./dialog-box-project.component.css']
 })
-export class DialogBoxComponent {
+export class DialogBoxProjectComponent {
   action:string;
   project: Project;
 
   constructor(
-    public dialogRef: MatDialogRef<DialogBoxComponent>,
-    @Inject(MAT_DIALOG_DATA) public dialogData: DialogData
+    public dialogRef: MatDialogRef<DialogBoxProjectComponent>,
+    @Inject(MAT_DIALOG_DATA) public dialogData: DialogDataProject
   )
   {
     this.project = dialogData.project;
