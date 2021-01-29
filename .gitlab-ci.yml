@@ -3,28 +3,25 @@ stages:
   - test
   - package
 
+# building all services as docker containers
+before_script:
+    - docker build -t compiler-service ./compiler/
+    - docker build -t darkmode-service ./dark-mode/
+    - docker build -t project-service ./project/
+
 build:
   stage: build
   script:
-    - docker build -t compiler-service ./compiler/
     - docker run --rm compiler-service mvn clean compile
-    - docker build -t darkmode-service ./dark-mode/
     - docker run --rm darkmode-service mvn clean compile
-    - docker build -t project-service ./project/
     - docker run --rm project-service mvn clean compile
 
 test:
   stage: test
   script:
-    - cd compiler
-    - mvn test
-    - cd ..
-    - cd dark-mode
-    - mvn test
-    - cd ..
-    - cd project
-    - mvn test
-    - cd ..
+    - docker run --rm compiler-service mvn test
+    - docker run --rm darkmode-service mvn test
+    - docker run --rm project-service mvn test
 
 package:
   stage: package
