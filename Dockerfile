@@ -13,5 +13,7 @@ RUN apk update && apk upgrade && \
 # copy files to docker container
 COPY . /opt/online-ide
 
+RUN ls /opt
+
 CMD /usr/bin/mvn
-ENTRYPOINT /opt/online-ide
+#ENTRYPOINT /opt/online-ide
