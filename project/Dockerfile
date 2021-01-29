@@ -8,4 +8,4 @@ COPY . $IDE_DIR
 WORKDIR $IDE_DIR
 
 # add maven dependencies to build in a safe way to avoid re-downloading on source-code change
-RUN mvn clean package -Dmaven.main.skip -Dmaven.test.skip && rm -r target
+RUN mvn dependency:go-offline
