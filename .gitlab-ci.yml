@@ -1,4 +1,6 @@
-image: maven:3.6.3-openjdk-15
+before_script:
+    - ls
+    - docker build -t mvn-gcc:latest .
 
 stages:
   - build
@@ -8,13 +10,28 @@ stages:
 build:
   stage: build
   script:
-    - cd compiler && mvn clean compile
-    - cd darkmode && mvn clean compile
-    - cd project && mvn clean compile
+    - cd compiler
+    - docker run --rm mvn-gcc mvn clean compile
+    - cd ..
+    - cd dark-mode
+    - mvn clean compile
+    - cd ..
+    - cd project
+    - mvn clean compile
+    - cd ..
 
 test:
   stage: test
-  script: mvn test
+  script:
+    - cd compiler
+    - mvn test
+    - cd ..
+    - cd dark-mode
+    - mvn test
+    - cd ..
+    - cd project
+    - mvn test
+    - cd ..
 
 package:
   stage: package
