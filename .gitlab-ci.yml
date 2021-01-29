@@ -6,8 +6,12 @@ stages:
 build:
   stage: build
   script:
-    - docker build -t compiler-service -f compiler
+    - docker build -t compiler-service ./compiler/
     - docker run --rm compiler-service mvn clean compile
+    - docker build -t darkmode-service ./dark-mode/
+    - docker run --rm darkmode-service mvn clean compile
+    - docker build -t project-service ./project/
+    - docker run --rm project-service mvn clean compile
 
 test:
   stage: test

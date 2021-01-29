@@ -1,7 +1,7 @@
 FROM alpine
 
 ENV LANG C.UTF-8
-ENV IDE_DIR /opt/online-ide
+ENV IDE_DIR /opt/service
 
 # copy files to docker container
 COPY . $IDE_DIR
