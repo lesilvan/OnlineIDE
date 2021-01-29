@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { SourceFile } from '../source-file';
 import { SourceFileService } from '../source-file.service';
 import {ProjectListService} from "../project-list.service";
 import {Project} from "../project";
+import {DialogBoxFileComponent} from "../dialog-box-file/dialog-box-file.component";
+import {MatDialog} from "@angular/material/dialog";
+import {CompilerService} from "../compiler.service";
+import {SourceCode} from "../source-code";
 
 @Component({
   selector: 'app-editor',
@@ -14,18 +16,31 @@ import {Project} from "../project";
 })
 export class EditorComponent implements OnInit {
   editorOptions = { theme: 'vs-dark', language: 'javascript' };
-  code: string = 'function x() {\nconsole.log("Hello world!");\n}';
   project_id: number;
-  project: Project;
+  project: Project = new Project();
+
+  visibilityEditor: string;
+  loadedSourceFile: SourceFile = new(SourceFile);
+  compilingDisabled: boolean = true;
+  savingDisabled: boolean = true;
+  sourceCode: SourceCode = new(SourceCode);
+  displayedCompilerMessage: string;
 
   constructor(
+    public dialog: MatDialog,
     private route: ActivatedRoute,
     private sourceFileService: SourceFileService,
-    private projectListService: ProjectListService
-  ) {}
+    private projectListService: ProjectListService,
+    private compilerService: CompilerService
+  ) {
+    this.project.sourceFiles = [];
+    this.loadedSourceFile.id = 0;
+  }
 
   ngOnInit(): void {
-    // Gets the current project_id from the routing
+    // no file is loaded -> make editor invisible
+    this.visibilityEditor = 'hidden'; // 'visible'
+    // Get the current project_id from the routing
     this.route.params.subscribe(params => {
       this.project_id = params['id'];
     })
@@ -33,22 +48,174 @@ export class EditorComponent implements OnInit {
     this.getProject(this.project_id);
   }
 
-  createNewFile() {}
+
+  /* Ignitable methods from user perspective */
+  createNewFile() {
+    this.openFileDialog(new SourceFile(), "Create new");
+  }
+
+  renameFile(id: number){
+    // Load current version of sourceFile
+    this.sourceFileService.loadSourceFile(id)
+      .subscribe((sourceFile) => {
+        // Try to rename it
+        this.openFileDialog(sourceFile, "Rename");
+      });
+  }
+
+  deleteFile(id: number){
+    // Load current version of sourceFile (check if still existent)
+    this.sourceFileService.loadSourceFile(id)
+      .subscribe((sourceFile) => {
+        // Try to delete it
+        this.openFileDialog(sourceFile, "Delete");
+      });
+  }
 
   shareProject() {}
 
-  saveProject() {}
+  saveFile() {
+    this.sourceFileService.saveSourceCode(
+      this.loadedSourceFile,
+      this.sourceCode.code).subscribe((sourceFile) => {
+        this.compilingDisabled = false;
+      }
+    )
+  }
 
-  compile() {}
-
-  // Functions for database interaction
-  getProject(id: number): void {
-    this.projectListService.getProject(id).subscribe((project) => {
-      (this.project = project, console.log("Project loaded:", project));
+  compile() {
+    this.compilerService.compile(
+      this.loadedSourceFile,
+      this.sourceCode.code
+    ).subscribe((result) => {
+      if (result.compilable == true) {
+        this.displayedCompilerMessage = "Successfully compiled...";
+      }
+      else {
+        this.displayedCompilerMessage = result.stderr;
+        // TODO: Improve display of error message
+      }
+      this.sourceCode.stderr = result.stderr;
+      this.sourceCode.stdout = result.stdout;
+      this.sourceCode.compilable = result.compilable;
+      console.log(result);
     });
   }
 
-  openSourceFileInEditor(id: number) {
+  openSourceFile(id: number) {
+    console.log("Loading content of sourceFile with id", id, "in editor started");
+    this.visibilityEditor = 'visible';
+    // Try to load latest version of file
+    this.sourceFileService.loadSourceFile(id)
+      .subscribe((sourceFile) => {
+        // Save initially loaded version of sourceFile
+        this.loadedSourceFile = sourceFile;
+        // Try to get sourceCode
+        this.getSourceCode(sourceFile);
+      });
+  }
 
+
+  /* Dialog Handler (as mediator between user wish and ignition of intended methodology */
+  openFileDialog(sourceFile: SourceFile, action: string): any {
+    const dialogRef = this.dialog.open(DialogBoxFileComponent, {
+      width: '250px',
+      data: { action: action, sourceFile: sourceFile},
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result.event == 'Create new') {
+        this.createSourceFile(result.sourceFile);
+      } else if (result.event == 'Rename') {
+        this.renameSourceFile(result.sourceFile);
+      } else if (result.event == 'Delete') {
+        this.deleteSourceFile(result.sourceFile);
+      }});
+  }
+
+  /** Function comparing sourceFiles for consistent sorting */
+  compareSourceFiles(file1: SourceFile, file2: SourceFile) {
+    if (file1.id < file2.id) {return -1;}
+    if (file1.id > file2.id) {return 1;}
+    return 0;
+  }
+
+
+
+  /* Functions for database interaction */
+  // Project database
+  private getProject(id: number): void {
+    this.projectListService.getProject(id).subscribe((project) => {
+      this.project = project;
+    });
+  }
+
+  private addSourceFileToProject(sourceFile: SourceFile): void {
+    this.projectListService.addSourceFile(this.project, sourceFile)
+      .subscribe((project) => {
+        this.project = project;
+      });
+  }
+
+  private renameSourceFile(sourceFile: SourceFile) {
+    this.sourceFileService.updateSourceFile(sourceFile)
+      .subscribe((sourceFile) => {
+        // Update loadedSourceFile Metadata (i.e. for potential compiling)
+        if (this.loadedSourceFile.id == sourceFile.id) {
+          this.loadedSourceFile = sourceFile;
+        }
+        // Update project to display latest information
+        this.getProject(this.project_id);
+      });
+  }
+
+  private deleteSourceFile(sourceFile) {
+    this.projectListService.deleteSourceFile(this.project, sourceFile)
+      .subscribe((project) => {
+        // Make editor invisible if deleted file was the working file
+        if (this.loadedSourceFile.id == sourceFile.id) {
+          this.visibilityEditor = 'hidden';
+          this.savingDisabled = true;
+          this.compilingDisabled = true;
+          this.displayedCompilerMessage = "";
+        }
+        // Update Project
+        this.getProject(this.project_id);
+      });
+  }
+
+  // SourceFile Database
+  private createSourceFile(sourceFile: SourceFile): void {
+    // Create source file (in sourceFile database)
+    this.sourceFileService.createSourceFile(sourceFile)
+      .subscribe((sourceFile) => {
+        // Add sourceFile to project (in project DB)
+        this.addSourceFileToProject(sourceFile);
+      });
+  }
+
+  private getSourceCode(sourceFile: SourceFile): void {
+    this.sourceFileService.getSourceCode(sourceFile)
+      .subscribe((code) => {
+        this.sourceCode.code = code;
+        this.sourceCode.fileName = sourceFile.name;
+        // Select correct language highlighting
+        // TODO: Set language of syntax highlighting according to fileending
+        /*if (this.getFileExtension(sourceFile.name) == "c") {
+          this.editorOptions.language = "objective-c";
+        } else if (this.getFileExtension(sourceFile.name) == "java") {
+          this.editorOptions.language = "java";
+        }
+        console.log(this.editorOptions.language);*/
+        this.savingDisabled = false;
+      });
+  }
+
+  sourceCodeChanged() {
+    //Disable Compile button
+    this.compilingDisabled = true;
+  }
+
+  getFileExtension(filename: string): string {
+    return filename.substring(filename.lastIndexOf('.')+1, filename.length) || filename;
   }
 }

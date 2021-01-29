@@ -13,11 +13,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { AppComponent } from './app.component';
-import { DialogBoxComponent } from './dialog-box/dialog-box.component';
+import { DialogBoxProjectComponent } from './dialog-box-project/dialog-box-project.component';
 import { EditorComponent } from './editor/editor.component';
 import { HomeComponent } from './home/home.component';
 import { ProjectManagementComponent } from './project-management/project-management.component';
 import { StartupComponent } from './startup/startup.component';
+import {DialogBoxFileComponent} from "./dialog-box-file/dialog-box-file.component";
+import {MatIconModule} from "@angular/material/icon";
+import {MatSortModule} from "@angular/material/sort";
+import {ObserversModule} from "@angular/cdk/observers";
+import {MatInputModule} from "@angular/material/input";
 
 const appRoutes: Routes = [
   { path: 'startup', component: StartupComponent },
@@ -32,7 +37,8 @@ const appRoutes: Routes = [
     HomeComponent,
     ProjectManagementComponent,
     StartupComponent,
-    DialogBoxComponent,
+    DialogBoxProjectComponent,
+    DialogBoxFileComponent,
     EditorComponent,
   ],
   imports: [
@@ -42,7 +48,7 @@ const appRoutes: Routes = [
     MatButtonModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true } // debugging purposes only
+      { enableTracing: true} // debugging purposes only
     ),
     MonacoEditorModule.forRoot(),
     FormsModule,
@@ -52,6 +58,10 @@ const appRoutes: Routes = [
     MatDialogModule,
     MatGridListModule,
     MatListModule,
+    MatIconModule,
+    MatSortModule,
+    ObserversModule,
+    MatInputModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
