@@ -8,6 +8,8 @@ import {DialogBoxFileComponent} from "../dialog-box-file/dialog-box-file.compone
 import {MatDialog} from "@angular/material/dialog";
 import {CompilerService} from "../compiler.service";
 import {SourceCode} from "../source-code";
+import {timer, Subscription} from "rxjs";
+import {DarkModeService} from "../dark-mode.service";
 
 @Component({
   selector: 'app-editor',
@@ -25,13 +27,15 @@ export class EditorComponent implements OnInit {
   savingDisabled: boolean = true;
   sourceCode: SourceCode = new(SourceCode);
   displayedCompilerMessage: string;
+  private timerSubscription: Subscription;
 
   constructor(
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private sourceFileService: SourceFileService,
     private projectListService: ProjectListService,
-    private compilerService: CompilerService
+    private compilerService: CompilerService,
+    private darkModeService: DarkModeService
   ) {
     this.project.sourceFiles = [];
     this.loadedSourceFile.id = 0;
@@ -44,10 +48,29 @@ export class EditorComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.project_id = params['id'];
     })
+    // Get interval timer to fetch dark mode button
+    this.timerSubscription = timer(0, 3000).subscribe(
+      (value) => {
+        console.log(value, new Date());
+        this.darkModeService.getDarkModeStatus().subscribe(
+          (darkModeEnabled) => {
+            if (darkModeEnabled) {
+              monaco.editor.setTheme("vs-dark");
+            } else {
+              monaco.editor.setTheme("vs");
+            }
+            console.log(darkModeEnabled);
+          }
+        );
+      }
+    );
     // Get project information
     this.getProject(this.project_id);
   }
 
+  ngOnDestroy() {
+    this.timerSubscription.unsubscribe();
+  }
 
   /* Ignitable methods from user perspective */
   createNewFile() {
