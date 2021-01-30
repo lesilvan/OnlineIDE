@@ -10,7 +10,7 @@ export class DarkModeService {
   darkModeUrl: string;
 
   constructor(private http: HttpClient) {
-    this.darkModeUrl = environment.apiUrl + '/dark-mode/';
+    this.darkModeUrl = environment.apiUrlDarkMode + '/dark-mode/';
   }
 
   /** GET dark mode status */

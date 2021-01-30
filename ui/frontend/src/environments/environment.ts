@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: '',
+  apiUrlProjects: '',
+  apiUrlSourceFile: '',
+  apiUrlCompiler: '',
+  apiUrlDarkMode: '',
 };
 
 /*

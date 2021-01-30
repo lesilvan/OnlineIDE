@@ -12,7 +12,7 @@ export class CompilerService {
   private readonly compilerUrl: string;
 
   constructor(private http: HttpClient) {
-    this.compilerUrl = environment.apiUrl + '/compile';
+    this.compilerUrl = environment.apiUrlCompiler + '/compile';
   }
 
   /** POST compile sourcecode */

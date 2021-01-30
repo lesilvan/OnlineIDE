@@ -14,7 +14,7 @@ export class ProjectListService {
   private projectDeleteUrl: string;
 
   constructor(private http: HttpClient) {
-    this.projectsUrl = environment.apiUrl + '/projects';
+    this.projectsUrl = environment.apiUrlProjects + '/projects';
   }
 
   /** GET project list from the server */
