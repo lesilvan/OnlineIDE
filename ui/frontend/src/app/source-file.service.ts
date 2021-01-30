@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { SourceFile } from './source-file';
 
 @Injectable({
@@ -10,23 +11,20 @@ export class SourceFileService {
   private sourceFilesUrl: string;
 
   constructor(private http: HttpClient) {
-    this.sourceFilesUrl = '/sourcefiles/';
+    this.sourceFilesUrl = environment.apiUrl + '/sourcefiles';
   }
 
   /** POST create sourceFile */
   createSourceFile(sourceFile: SourceFile): Observable<SourceFile> {
     return this.http.post<SourceFile>(
-      this.sourceFilesUrl + 'create',
+      this.sourceFilesUrl + '/create',
       sourceFile
     );
   }
 
   /** GET load sourceFile */
   loadSourceFile(id: number): Observable<SourceFile> {
-    return this.http.get<SourceFile>(
-      this.sourceFilesUrl + String(id),
-      {}
-    );
+    return this.http.get<SourceFile>(this.sourceFilesUrl + String(id), {});
   }
 
   /** POST rename sourceFile */
@@ -41,18 +39,19 @@ export class SourceFileService {
   getSourceCode(sourceFile: SourceFile) {
     return this.http.get(
       this.sourceFilesUrl + String(sourceFile.id) + '/sourcecode',
-      {responseType: "text"}
+      { responseType: 'text' }
     );
   }
 
   /** POST update sourcecode */
-  saveSourceCode(sourceFile: SourceFile, sourceCode: string): Observable<SourceFile> {
+  saveSourceCode(
+    sourceFile: SourceFile,
+    sourceCode: string
+  ): Observable<SourceFile> {
     return this.http.post<SourceFile>(
       this.sourceFilesUrl + String(sourceFile.id) + '/update-sourcecode',
       sourceCode,
-      {responseType: "json"}
+      { responseType: 'json' }
     );
   }
-
-
 }
