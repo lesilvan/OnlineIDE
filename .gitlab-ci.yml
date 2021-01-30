@@ -1,13 +1,21 @@
 stages:
+  - imaging
   - build
   - test
   - package
 
 # building all services as docker containers
 before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --pull
     - docker build -t compiler-service ./compiler/
     - docker build -t darkmode-service ./dark-mode/
     - docker build -t project-service ./project/
+
+image-compiler-service:
+  stage: imaging
+  script:
+    - docker build -t $CI_REGISTRY/ase20-group1-2/OnlineIDE/compiler-service:latest ./compiler/
 
 build:
   stage: build
