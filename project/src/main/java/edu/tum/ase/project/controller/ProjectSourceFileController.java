@@ -26,10 +26,10 @@ public class ProjectSourceFileController {
         return service.create(sourceFile);
     }
 
-    @GetMapping("{id}")
-    public ProjectSourceFile read(@PathVariable(name = "id") String id) {
-        return service.findById(id);
-    }
+    // @GetMapping("{id}")
+    // public ProjectSourceFile read(@PathVariable(name = "id") String id) {
+    //     return service.fineddById(id);
+    // }
 
     @GetMapping(value = "{id}/sourcecode", produces = "text/html; charset=UTF-8")
     @ResponseBody
