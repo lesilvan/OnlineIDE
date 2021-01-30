@@ -14,12 +14,12 @@ export class ProjectListService {
   private projectDeleteUrl: string;
 
   constructor(private http: HttpClient) {
-    this.projectsUrl = environment.apiUrlProjects + '/projects';
+    this.projectsUrl = environment.apiUrlProjects + '/projects/';
   }
 
   /** GET project list from the server */
   getProjectList(): Observable<Project[]> {
-    return this.http.get<Project[]>(this.projectsUrl + '/', {
+    return this.http.get<Project[]>(this.projectsUrl, {
       observe: 'body',
       responseType: 'json',
     });
