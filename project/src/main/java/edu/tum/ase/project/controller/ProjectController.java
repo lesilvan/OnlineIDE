@@ -4,6 +4,8 @@ import edu.tum.ase.project.model.Project;
 import edu.tum.ase.project.model.ProjectSourceFile;
 import edu.tum.ase.project.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,9 +52,10 @@ public class ProjectController {
     }
 
     // delete
-    @PostMapping("delete")
-    public String delete(@RequestBody Project project) {
-        service.delete(project);
-        return "{ \"ok\": true }";
+    @DeleteMapping("{id}/delete")
+    public Boolean delete(@PathVariable(name="id") String id) {
+        Project p = service.findById(id);
+        var isRemoved = service.delete(p);
+        return isRemoved;
     }
 }

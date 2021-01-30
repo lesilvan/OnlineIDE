@@ -36,8 +36,8 @@ public class DarkmodeApplication {
     }
 
     @RequestMapping(path = "/dark-mode", method = RequestMethod.GET)
-    public String darkMode() {
-        return "{ darkModeEnabled: %s }".formatted(darkModeEnabled);
+    public boolean darkMode() {
+        return darkModeEnabled;
     }
 
     private boolean isToggleOnCoolDown() {

@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: ${url:localhost}
+    port: ${port:5432}
+    name: ${name:my_db}
+    username: ${username:admin}
+    password: ${password:test}
+
+  jpa:
+    hibernate.ddl-auto: update
+    properties.hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      jdbc.lob.non_contextual_creation: true

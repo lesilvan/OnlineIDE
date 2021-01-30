@@ -1,0 +1,69 @@
+<!-- Project tile -->
+<div class="container">
+  <div class="side-bar">
+    <div class="side-bar-button-group">
+      <a
+        [routerLink]="['/manage-projects']"
+        mat-raised-button
+        color="primary"
+        routerLink="/home"
+        routerLinkActive="active"
+        >Back</a
+      >
+      <a
+        [routerLink]="['/home']"
+        mat-raised-button
+        color="primary"
+        routerLink="/home"
+        routerLinkActive="active"
+        >Logout</a
+      >
+    </div>
+    <div class="side-bar-button-group">
+      <button (click)="createNewFile()" mat-raised-button color="basic">
+        New File
+      </button>
+      <button (click)="shareProject()" mat-raised-button color="basic">
+        Share Project
+      </button>
+    </div>
+    <h1 class="mat-h1" >{{project.name}}</h1>
+
+    <mat-action-list>
+      <mat-list-item *ngFor="let file of project.sourceFiles.sort(compareSourceFiles)">
+        <button
+          (click)="openSourceFile(file.id)" mat-stroked-button color="basic">
+          {{ file.name }}
+        </button>
+        <mat-icon
+          (click)="renameFile(file.id)" aria-hidden="false" color="primary" aria-label="Rename">
+          edit
+        </mat-icon>
+        <mat-icon
+          (click)="deleteFile(file.id)" aria-hidden="true" color="warn" aria-label="Delete">
+          delete_forever
+        </mat-icon>
+      </mat-list-item>
+    </mat-action-list>
+  </div>
+
+  <div class="main-view">
+    <div>
+      <button [disabled]="savingDisabled" (click)="saveFile()" mat-raised-button color="primary">Save</button>
+      <button [disabled]="compilingDisabled" (click)="compile()" mat-raised-button color="primary">Compile</button>
+      <h1 class="mat-h1" style="display:inline;">{{loadedSourceFile.name}}</h1>
+    </div>
+
+    <div class="editor" [style.visibility]="visibilityEditor" (cdkObserveContent)="sourceCodeChanged()">
+      <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="sourceCode.code">
+      </ngx-monaco-editor>
+    </div>
+
+    <div class="compile-output">
+      <h3 class="mat-h3" >Output of compiler</h3>
+      <div class="result">
+        {{displayedCompilerMessage}}
+      </div>
+    </div>
+  </div>
+</div>

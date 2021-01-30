@@ -31,13 +31,11 @@ public class ProjectSourceFileController {
         return service.findById(id);
     }
 
-    @GetMapping(value = "{id}/get-sourcecode", produces = "text/html; charset=UTF-8")
+    @GetMapping(value = "{id}/sourcecode", produces = "text/html; charset=UTF-8")
     @ResponseBody
     public String getSourceCode(@PathVariable(name = "id") String id) {
         ProjectSourceFile sf = service.findById(id);
-        String sourceCode = service.getSourceCode(sf);
-
-        return sourceCode;
+        return service.getSourceCode(sf);
     }
 
     // updates

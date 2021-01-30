@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Set;
 
 @Entity
@@ -47,9 +48,10 @@ public class Project {
     }
 
     public void removeSourceFile(ProjectSourceFile sourceFile) {
-        for (ProjectSourceFile sf : getSourceFiles()) {
+        for (Iterator<ProjectSourceFile> iterator = getSourceFiles().iterator(); iterator.hasNext();) {
+            ProjectSourceFile sf = iterator.next();
             if (sf.getId().equals(sourceFile.getId())) {
-                sourceFiles.remove(sf);
+                iterator.remove();
                 sf.deleteSourceFile();
             }
         }
