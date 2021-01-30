@@ -1,7 +1,11 @@
 package edu.tum.ase.compiler.service;
 
+import edu.tum.ase.compiler.CompilerApplication;
+import edu.tum.ase.compiler.controller.CompilerController;
 import edu.tum.ase.compiler.model.SourceCode;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.tools.*;
@@ -12,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CompilerService {
+    Logger logger = LoggerFactory.getLogger(CompilerApplication.class);
     // C compilation constants
     String tmpDir = "./tmp";
     String inDir = tmpDir + "/in";
@@ -62,7 +67,7 @@ public class CompilerService {
     private SourceCode compileCCode(SourceCode sourceCode) throws IOException {
         // create source file and input and output dirs
         File sourceFile = createSourceFile(sourceCode);
-        createInOutDirs();
+        createInOutDirs(); //TODO: Evaluate if necessary
 
         // get runtime process for compilation with GCC
         String cmd = buildGCCCommand(sourceFile);
@@ -100,7 +105,7 @@ public class CompilerService {
     private String buildGCCCommand(File sourceFile) {
         String outputPath = outDir + "/" + sourceFile.getName().substring(0, sourceFile.getName().length() - 2);
         String cmd = String.format("gcc %s -o %s", sourceFile.getAbsolutePath(), outputPath);
-
+        logger.info("cmd command: " + cmd);
         return cmd;
     }
 
