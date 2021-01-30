@@ -6,6 +6,7 @@ stages:
 
 # building all services as docker containers
 before_script:
+    - echo $CI_REGISTRY_USER
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build --pull
     - docker build -t compiler-service ./compiler/
