@@ -2,6 +2,7 @@ FROM alpine
 
 ENV LANG C.UTF-8
 ENV IDE_DIR /opt/service
+ENV JAVA_MAIN_CLASS edu.tum.ase.compiler.CompilerApplication
 
 # copy files to docker container
 COPY . $IDE_DIR
@@ -15,7 +16,4 @@ RUN export TESTING_REPO="http://$(head -n 1 /etc/apk/repositories | awk 'BEGIN{F
 RUN apk update && apk upgrade && \
     apk add openjdk15 maven gcc musl-dev
 
-# add maven dependencies to build in a safe way to avoid re-downloading on source-code change
-RUN mvn dependency:go-offline
-
-CMD /usr/bin/mvn
+CMD mvn exec:java -Dexec.mainClass=$JAVA_MAIN_CLASS -Dspring.profiles.active=prod

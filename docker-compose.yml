@@ -1,0 +1,49 @@
+version: "3.8"
+
+networks:
+  online-ide:
+    driver: bridge
+  online-ide-database:
+    driver: bridge
+
+volumes:
+  projectsdata:
+
+services:
+  postgresdb:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - "projectsdata:/var/lib/postgresql/data"
+    restart: on-failure
+    networks:
+      - online-ide-database
+
+  compiler:
+    image: compiler-service:latest
+    restart: on-failure
+    networks:
+      - online-ide
+
+  darkmode:
+    image: darkmode-service:latest
+    restart: on-failure
+    networks:
+      - online-ide
+
+  project:
+    image: project-service:latest
+    #restart: on-failure
+    restart: "no"
+    networks:
+      - online-ide
+      - online-ide-database
+    environment:
+      - POSTGRES_URL=postgresdb   # must be same name as postgresdb-service
+      - POSTGRES_PORT=5432        # use default postgres port
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}

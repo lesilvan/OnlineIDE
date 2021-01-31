@@ -1,13 +1,16 @@
 spring:
   datasource:
-    url: ${url:localhost}
-    port: ${port:5432}
-    name: ${name:my_db}
-    username: ${username:admin}
-    password: ${password:test}
+    url: ${POSTGRES_URL:localhost}
+    port: ${POSTGRES_PORT:5432}
+    name: ${POSTGRES_DB:test_db}
+    username: ${POSTGRES_USER:admin}
+    password: ${POSTGRES_PASSWORD:test}
 
   jpa:
     hibernate.ddl-auto: update
     properties.hibernate:
       dialect: org.hibernate.dialect.PostgreSQLDialect
       jdbc.lob.non_contextual_creation: true
+
+server:
+  port: 8080

@@ -1,3 +1,2 @@
-# uses in code predefined in-memory hikari database (no need to specify login credentials here)
 server:
   port: 8083
