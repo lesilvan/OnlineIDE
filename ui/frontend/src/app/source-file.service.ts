@@ -11,7 +11,7 @@ export class SourceFileService {
   private sourceFilesUrl: string;
 
   constructor(private http: HttpClient) {
-    this.sourceFilesUrl = environment.apiUrlSourceFile + '/sourcefiles/';
+    this.sourceFilesUrl = environment.apiUrl + '/project/sourcefiles/';
   }
 
   /** POST create sourceFile */

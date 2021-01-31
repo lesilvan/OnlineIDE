@@ -1,11 +1,11 @@
 {
-  "/projects/*": {
+  "/project/projects/*": {
     "target": "http://localhost:8081",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
-  "/sourcefiles/*": {
+  "/project/sourcefiles/*": {
     "target": "http://localhost:8081",
     "secure": false,
     "logLevel": "debug",
