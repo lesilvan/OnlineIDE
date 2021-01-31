@@ -1,3 +1,11 @@
 spring:
+  application:
+    name: project-service
   profiles:
     active: dev # or prod --> decides which database to use (either H2 in-memory db or postgres)
+server:
+  port: ${PORT:8081}
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
