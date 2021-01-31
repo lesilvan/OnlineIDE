@@ -13,6 +13,7 @@ $ ./docker-build.sh
 Source environment variables used for setting up database configuration:
 
 ```
+$ set -a
 $ source .env.dev
 ```
 
