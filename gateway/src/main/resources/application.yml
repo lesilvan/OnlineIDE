@@ -22,6 +22,5 @@ zuul:
       stripPrefix: false
     ui-service:
       path: /**
-      stripPrefix: false
 ribbon.ConnectTimeout: 10000
 ribbon.ReadTimeout: 10000
