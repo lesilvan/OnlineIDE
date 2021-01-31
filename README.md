@@ -23,6 +23,12 @@ Use docker-compose to setup a microservice mesh with an according project databa
 $ docker-compose up
 ```
 
+To gracefully remove artifacts and shutdown the environment, please use:
+
+```
+$ docker-compose down
+```
+
 ## Docker: Production Runtime
 
 *This is for use on the cloud server.*
