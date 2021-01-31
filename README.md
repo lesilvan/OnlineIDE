@@ -13,7 +13,7 @@ $ ./docker-build.sh
 Source environment variables used for setting up database configuration:
 
 ```
-$ source .env.prod
+$ source .env.dev
 ```
 
 Use docker-compose to setup a microservice mesh with an according project database:
