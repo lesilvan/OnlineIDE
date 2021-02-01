@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 build_service() {
     local service_dir=$1
     local service_name=$2
@@ -18,8 +20,8 @@ check_openjdk_version() {
 }
 
 WORKDIR=$(pwd)
-SERVICE_DIRS=( 'compiler/' 'dark-mode/' 'project/' )
-SERVICE_NAMES=( 'compiler-service' 'darkmode-service' 'project-service' )
+SERVICE_DIRS=( 'compiler/' 'dark-mode/' 'project/' 'ui/' )
+SERVICE_NAMES=( 'compiler-service' 'darkmode-service' 'project-service' 'frontend-service' )
 OPENJDK_VERSION=15
 BUILD_LOG="$WORKDIR/.docker-build.log"
 
