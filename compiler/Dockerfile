@@ -14,6 +14,6 @@ RUN export TESTING_REPO="http://$(head -n 1 /etc/apk/repositories | awk 'BEGIN{F
 
 # run update, upgrade and install packages
 RUN apk update && apk upgrade && \
-    apk add openjdk15 maven gcc musl-dev
+    apk add --no-cache openjdk15 maven gcc musl-dev
 
 CMD mvn exec:java -Dexec.mainClass=$JAVA_MAIN_CLASS -Dspring.profiles.active=prod
