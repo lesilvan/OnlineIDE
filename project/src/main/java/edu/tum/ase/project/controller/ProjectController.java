@@ -22,38 +22,38 @@ public class ProjectController {
     }
 
     // create and read
-    @PostMapping("create")
+    @PostMapping("/create")
     public Project create(@RequestBody Project project) {
         return service.create(project);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public Project read(@PathVariable("id") String id) {
         return service.findById(id);
     }
 
     // updates
-    @PostMapping("{id}/rename")
+    @PostMapping("/{id}/rename")
     public Project rename(@RequestBody String name, @PathVariable(name = "id") String id) {
         Project p = service.findById(id);
         return service.updateName(p, name);
     }
 
-    @PostMapping("{id}/add-sourcefile")
-    public Project addSourceFile(@RequestBody ProjectSourceFile sourceFile, @PathVariable(name ="id") String id) {
+    @PostMapping("/{id}/add-sourcefile")
+    public Project addSourceFile(@RequestBody ProjectSourceFile sourceFile, @PathVariable(name = "id") String id) {
         Project p = service.findById(id);
         return service.addSourceFile(p, sourceFile);
     }
 
-    @PostMapping("{id}/remove-sourcefile")
-    public Project removeSourceFile(@RequestBody ProjectSourceFile sourceFile, @PathVariable(name ="id") String id) {
+    @PostMapping("/{id}/remove-sourcefile")
+    public Project removeSourceFile(@RequestBody ProjectSourceFile sourceFile, @PathVariable(name = "id") String id) {
         Project p = service.findById(id);
         return service.removeSourceFile(p, sourceFile);
     }
 
     // delete
-    @DeleteMapping("{id}/delete")
-    public Boolean delete(@PathVariable(name="id") String id) {
+    @DeleteMapping("/{id}/delete")
+    public Boolean delete(@PathVariable(name = "id") String id) {
         Project p = service.findById(id);
         var isRemoved = service.delete(p);
         return isRemoved;
