@@ -16,9 +16,9 @@ build_backend_service() {
 
 build_frontend_service() {
     local service_dir='ui/'
-    local service_name='frontend-service'
+    local service_name='ui-service'
 
-    cd $service_dir
+    cd $WORKDIR/$service_dir
     echo "Building: $service_name at $WORKDIR/$service_dir"
     echo -e "\t> docker build"
     docker build --pull -t $service_name . 1> $BUILD_LOG || { echo "error: Could not build docker image. Check log at $BUILD_LOG"; exit 1; }
@@ -34,8 +34,8 @@ check_openjdk_version() {
 WORKDIR=$(pwd)
 
 # Backend services
-SERVICE_DIRS=( 'compiler/' 'dark-mode/' 'project/' )
-SERVICE_NAMES=( 'compiler-service' 'darkmode-service' 'project-service')
+SERVICE_DIRS=( 'compiler/' 'dark-mode/' 'project/' 'discoveryserver/' 'gateway/' )
+SERVICE_NAMES=( 'compiler-service' 'darkmode-service' 'project-service' 'discovery-service' 'gateway-service')
 OPENJDK_VERSION=15
 BUILD_LOG="$WORKDIR/.docker-build.log"
 

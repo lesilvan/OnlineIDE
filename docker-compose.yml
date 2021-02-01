@@ -10,6 +10,27 @@ volumes:
   projectsdata:
 
 services:
+  discovery:
+    image: discovery-service:latest
+    restart: on-failure
+    networks:
+      - online-ide
+    environment:
+      - PORT=${EUREKA_PORT}
+    ports:
+      - "${EUREKA_PORT}:${EUREKA_PORT}"
+
+  gateway:
+    image: gateway-service:latest
+    restart: on-failure
+    environment:
+      - EUREKA
+    networks:
+      - online-ide
+    environment:
+      - EUREKA_SERVER=${EUREKA_SERVER}
+      - PORT=8080
+
   postgresdb:
     image: postgres:latest
     environment:
@@ -27,12 +48,18 @@ services:
     restart: on-failure
     networks:
       - online-ide
+    environment:
+      - EUREKA_SERVER=${EUREKA_SERVER}
+      - PORT=8080
 
   darkmode:
     image: darkmode-service:latest
     restart: on-failure
     networks:
       - online-ide
+    environment:
+      - EUREKA_SERVER=${EUREKA_SERVER}
+      - PORT=8080
 
   project:
     image: project-service:latest
@@ -46,9 +73,16 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
+    environment:
+      - EUREKA_SERVER=${EUREKA_SERVER}
+      - PORT=8080
 
-  frontend:
-    image: frontend-service:latest
+  ui:
+    image: ui-service:latest
     restart: on-failure
     networks:
       - online-ide
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_SERVER=${EUREKA_SERVER}
