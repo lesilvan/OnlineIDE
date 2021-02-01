@@ -4,10 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrlProjects: '',
-  apiUrlSourceFile: '',
-  apiUrlCompiler: '',
-  apiUrlDarkMode: '',
+  apiUrl: 'http://localhost:4200/api',
 };
 
 /*

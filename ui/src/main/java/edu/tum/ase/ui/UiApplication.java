@@ -2,6 +2,7 @@ package edu.tum.ase.ui;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
 import java.io.IOException;
 
 @SpringBootApplication
+@EnableEurekaClient
 public class UiApplication {
 
     public static void main(String[] args) {
