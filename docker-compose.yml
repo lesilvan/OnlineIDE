@@ -36,8 +36,7 @@ services:
 
   project:
     image: project-service:latest
-    #restart: on-failure
-    restart: "no"
+    restart: on-failure
     networks:
       - online-ide
       - online-ide-database
@@ -47,3 +46,9 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
+
+  frontend:
+    image: frontend-service:latest
+    restart: on-failure
+    networks:
+      - online-ide
