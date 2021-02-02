@@ -1,24 +1,24 @@
 {
   "localhost:4200/api/project/projects/*": {
-    "target": "http://localhost:8081",
+    "target": "http://project-service:8081",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "localhost:4200/api/project/sourcefiles/*": {
-    "target": "http://localhost:8081",
+    "target": "http://project-service:8081",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "localhost:4200/api/compile/*": {
-    "target": "http://localhost:8082",
+    "target": "http://compiler-service:8082",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
   },
   "localhost:4200/api/dark-mode/*": {
-    "target": "http://localhost:8083",
+    "target": "http://darkmode-service:8083",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true

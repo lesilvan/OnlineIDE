@@ -16,7 +16,7 @@ services:
     networks:
       - online-ide
     environment:
-      - PORT=${EUREKA_PORT}
+      - EUREKA_PORT=${EUREKA_PORT}
     ports:
       - "${EUREKA_PORT}:${EUREKA_PORT}"
 
@@ -29,7 +29,9 @@ services:
       - online-ide
     environment:
       - EUREKA_SERVER=${EUREKA_SERVER}
-      - PORT=8080
+    # TODO: Remove ports
+    ports:
+      - "8000:8000"
 
   postgresdb:
     image: postgres:latest
@@ -50,7 +52,6 @@ services:
       - online-ide
     environment:
       - EUREKA_SERVER=${EUREKA_SERVER}
-      - PORT=8080
 
   darkmode:
     image: darkmode-service:latest
@@ -59,7 +60,6 @@ services:
       - online-ide
     environment:
       - EUREKA_SERVER=${EUREKA_SERVER}
-      - PORT=8080
 
   project:
     image: project-service:latest
@@ -75,7 +75,6 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     environment:
       - EUREKA_SERVER=${EUREKA_SERVER}
-      - PORT=8080
 
   ui:
     image: ui-service:latest

@@ -50,6 +50,14 @@ This will pull all images from the local registry and spin up containers accordi
 
 ## Run app without docker
 
+### Dependencies
+
+```
+$ yes n | npm install --global @angular/cli
+$ cd frontend
+$ yes n | npm install --save-dev @angular-devkit/build-angular
+```
+
 How to run this project
 
 Start UI only (without microservice integration)

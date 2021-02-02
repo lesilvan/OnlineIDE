@@ -4,7 +4,7 @@ spring:
   profiles:
     active: dev # or prod --> decides which database to use (either H2 in-memory db or postgres)
 server:
-  port: ${PORT:8083}
+  port: ${DARKMODE_PORT:8083}
   servlet:
     context-path: /api
 eureka:

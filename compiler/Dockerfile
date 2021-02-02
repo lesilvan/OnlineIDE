@@ -2,7 +2,7 @@ FROM alpine
 
 ENV LANG C.UTF-8
 ENV IDE_DIR /opt/service
-ENV JAVA_MAIN_CLASS edu.tum.ase.compiler.CompilerApplication
+ENV JAR_PATH ./target/compiler-0.0.1-SNAPSHOT.jar
 
 # copy files to docker container
 COPY . $IDE_DIR
@@ -16,4 +16,4 @@ RUN export TESTING_REPO="http://$(head -n 1 /etc/apk/repositories | awk 'BEGIN{F
 RUN apk update && apk upgrade && \
     apk add --no-cache openjdk15 maven gcc musl-dev
 
-CMD mvn exec:java -Dexec.mainClass=$JAVA_MAIN_CLASS -Dspring.profiles.active=prod
+CMD java -jar $JAR_PATH -Dspring.profiles.active=prod

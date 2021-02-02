@@ -1,8 +1,8 @@
 FROM alpine
 
 ENV LANG C.UTF-8
-ENV JAVA_MAIN_CLASS edu.tum.ase.ui.UiApplication
 ENV WORK_DIR /usr/src/app
+ENV JAR_PATH ./target/ui-0.0.1-SNAPSHOT.jar
 
 # copy files to docker container
 COPY . $WORK_DIR
@@ -17,11 +17,4 @@ RUN export TESTING_REPO="http://$(head -n 1 /etc/apk/repositories | awk 'BEGIN{F
 RUN apk update && apk upgrade && \
     apk add --no-cache openjdk15 maven nodejs npm
 
-RUN yes n | npm install --global @angular/cli
-RUN cd frontend && \
-    yes n | npm install --save-dev @angular-devkit/build-angular
-RUN cd frontend && \
-        ng build --prod --outputPath=../src/main/resources/static/
-RUN mvn clean compile && mvn package
-
-CMD mvn exec:java -Dexec.mainClass=$JAVA_MAIN_CLASS -Dspring.profiles.active=prod
+CMD java -jar $JAR_PATH -Dspring.profiles.active=prod
