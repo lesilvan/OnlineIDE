@@ -27,7 +27,7 @@ export class ProjectListService {
 
   /** POST new project to server */
   addProject(project: Project): Observable<Project> {
-    return this.http.post<Project>(this.projectsUrl + '/create', project, {});
+    return this.http.post<Project>(this.projectsUrl + 'create', project, {});
   }
 
   /** POST rename project */

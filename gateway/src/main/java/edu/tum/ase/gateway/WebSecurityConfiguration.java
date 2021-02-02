@@ -6,11 +6,24 @@ package edu.tum.ase.gateway;
 //import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 //import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
 
 //@EnableOAuth2Sso
 //@Configuration
+//@EnableWebSecurity
 //public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+//
 //
 //    @Override
 //    protected void configure(HttpSecurity http) throws Exception {
@@ -32,3 +45,33 @@ import javax.servlet.http.HttpServletResponse;
 ////                .antMatchers("/api/**").authenticated();
 //    }
 //}
+
+@Configuration
+@EnableWebSecurity
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            //configure CORS -- uses a Bean by the name of     corsConfigurationSource (see method below)
+            //CORS must be configured prior to Spring Security
+            .cors();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        final UrlBasedCorsConfigurationSource source = new     UrlBasedCorsConfigurationSource();
+        final CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin(CorsConfiguration.ALL);
+        config.setAllowedHeaders(Collections.singletonList(CorsConfiguration.ALL));
+        config.addAllowedMethod("OPTIONS");
+        config.addAllowedMethod("HEAD");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("DELETE");
+        config.addAllowedMethod("PATCH");
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+}

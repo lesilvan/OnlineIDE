@@ -17,7 +17,7 @@ export class SourceFileService {
   /** POST create sourceFile */
   createSourceFile(sourceFile: SourceFile): Observable<SourceFile> {
     return this.http.post<SourceFile>(
-      this.sourceFilesUrl + '/create',
+      this.sourceFilesUrl + 'create',
       sourceFile
     );
   }

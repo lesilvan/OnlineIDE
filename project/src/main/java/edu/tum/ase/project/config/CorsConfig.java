@@ -1,4 +1,4 @@
-package edu.tum.ase.project;
+package edu.tum.ase.project.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
