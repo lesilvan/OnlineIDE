@@ -50,6 +50,7 @@ project-package:
 deploy:
   stage: deploy
   script:
+    - echo $EUREKA_SERVER $EUREKA_PORT
     - echo $SSH_PRIV_KEY > $SSH_PRIV_KEY_FILE
     - scp -i $SSH_PRIV_KEY_FILE docker-compose.prod.yml $SSH_HOST:~/
     - ssh -i $SSH_PRIV_KEY_FILE $SSH_HOST "sudo docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
