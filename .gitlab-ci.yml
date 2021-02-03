@@ -51,13 +51,13 @@ deploy:
   stage: deploy
   script:
     - eval $(ssh-agent -s)
-    - ssh-add <(echo $SSH_PRIVATE_KEY)
+    - ssh-add <(echo $SSH_PRIV_KEY)
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - scp docker-compose.prod.yml $SSH_HOST:~/
     - ssh $SSH_HOST "echo $POSTGRES_USER"
     - ssh $SSH_HOST "sudo docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
-    - ssh -i $SSH_PRIV_KEY_FILE $SSH_HOST "sudo docker-compose -f docker-compose.prod.yaml pull && sudo docker-compose -f docker-compose.prod.yml up --force-recreate -d"
+    - ssh $SSH_HOST "sudo docker-compose -f docker-compose.prod.yaml pull && sudo docker-compose -f docker-compose.prod.yml up --force-recreate -d"
   variables:
     SSH_HOST: raph.hohmann@34.107.85.135
     # TODO: Remove
