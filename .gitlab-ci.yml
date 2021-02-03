@@ -50,14 +50,14 @@ project-package:
 deploy:
   stage: deploy
   script:
-    - echo $EUREKA_SERVER $EUREKA_PORT
+    - touch $SSH_PRIV_KEY_FILE
     - echo $SSH_PRIV_KEY > $SSH_PRIV_KEY_FILE
     - scp -i $SSH_PRIV_KEY_FILE docker-compose.prod.yml $SSH_HOST:~/
     - ssh -i $SSH_PRIV_KEY_FILE $SSH_HOST "echo $POSTGRES_USER"
     - ssh -i $SSH_PRIV_KEY_FILE $SSH_HOST "sudo docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
     - ssh -i $SSH_PRIV_KEY_FILE $SSH_HOST "sudo docker-compose -f docker-compose.prod.yaml pull && sudo docker-compose -f docker-compose.prod.yml up --force-recreate -d"
   variables:
-    SSH_PRIV_KEY_FILE: ~/ase_practical.key
+    SSH_PRIV_KEY_FILE: ase_practical.key
     SSH_HOST: raph.hohmann@34.107.85.135
     # TODO: Remove
     #  only:
