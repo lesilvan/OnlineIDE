@@ -22,22 +22,9 @@ services:
     networks:
       - online-ide-database
 
-  compiler:
-    image: gitlab.lrz.de:5005/ase20-group1-2/ase20-practical-exercise/compiler-service:latest
-    restart: on-failure
-    networks:
-      - online-ide
-
-  darkmode:
-    image: gitlab.lrz.de:5005/ase20-group1-2/ase20-practical-exercise/darkmode-service:latest
-    restart: on-failure
-    networks:
-      - online-ide
-
   project:
     image: gitlab.lrz.de:5005/ase20-group1-2/ase20-practical-exercise/project-service:latest
-    #restart: on-failure
-    restart: "no"
+    restart: on-failure
     networks:
       - online-ide
       - online-ide-database
