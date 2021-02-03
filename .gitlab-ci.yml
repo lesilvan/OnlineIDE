@@ -56,7 +56,7 @@ deploy:
     - ssh $SSH_HOST "sudo docker-compose -f docker-compose.prod.yaml pull && sudo docker-compose -f docker-compose.prod.yml up --force-recreate -d"
   variables:
     SSH_HOST: raph.hohmann@34.107.85.135
-    KEY_FILE: ~/.ssh/ase_practical
+    KEY_FILE: /home/akio/.ssh/ase_practical
     # TODO: Remove
     #  only:
     #    refs:
