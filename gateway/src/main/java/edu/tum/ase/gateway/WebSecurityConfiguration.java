@@ -1,12 +1,5 @@
 package edu.tum.ase.gateway;
 
-//import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-//import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -52,14 +45,21 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            //configure CORS -- uses a Bean by the name of     corsConfigurationSource (see method below)
+            //configure CORS -- uses a Bean by the name of corsConfigurationSource (see method below)
             //CORS must be configured prior to Spring Security
-            .cors();
+            .cors()
+            .and()
+             // CONFIGURE AUTHORIZATION HERE for web tokens
+            .authorizeRequests()
+                .antMatchers("/**")
+                .permitAll()
+             // This is needed to let through POST, DELETE, PUT, PATCH etc. http requests
+            .and().httpBasic().and().csrf().disable();
     }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
-        final UrlBasedCorsConfigurationSource source = new     UrlBasedCorsConfigurationSource();
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin(CorsConfiguration.ALL);

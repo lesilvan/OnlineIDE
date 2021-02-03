@@ -29,7 +29,6 @@ services:
       - online-ide
     environment:
       - EUREKA_SERVER=${EUREKA_SERVER}
-    # TODO: Remove ports
     ports:
       - "8000:8000"
 
@@ -60,6 +59,8 @@ services:
       - online-ide
     environment:
       - EUREKA_SERVER=${EUREKA_SERVER}
+    ports:
+      - "8083:8083"
 
   project:
     image: project-service:latest

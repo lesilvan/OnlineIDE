@@ -1,19 +1,33 @@
 # hidden yaml configuration to only run pipelines when according source directory has been modified
 .compiler-rules: &compiler-changes
-  rules:
-    - changes:
-      - compiler/*
+  only:
+    changes:
+      - compiler/**/*
 
 .darkmode-rules: &darkmode-changes
-  rules:
-    - changes:
-      - dark-mode/*
+  only:
+    changes:
+      - dark-mode/**/*
 
 .project-rules: &project-changes
+  only:
+    changes:
+      - project/**/*
+
+.gateway-rules: &gateway-changes
+  only:
+    changes:
+      - gateway/**/*
+
+.ui-rules: &ui-changes
+  only:
+    changes:
+      - ui/**/*
+
+.discovery-rules: &discovery-changes
   rules:
     - changes:
-      - project/*
-
+      - discoveryserver/*
 stages:
   - build
   - test
@@ -26,25 +40,46 @@ before_script:
 
 # building all services as docker images
 compiler-publish:
-  stage: docker
+  stage: publish
   script:
     - docker build --pull -t $CI_REGISTRY/ase20-group1-2/ase20-practical-exercise/compiler-service:latest ./compiler/
     - docker push $CI_REGISTRY/ase20-group1-2/ase20-practical-exercise/compiler-service:latest
   <<: *compiler-changes
 
 darkmode-publish:
-  stage: docker
+  stage: publish
   script:
-    - docker build --pull -t $CI_REGISTRY/ase20-group1-2/ase20-practical-exercise/compiler-service:latest ./dark-mode/
+    - docker build --pull -t $CI_REGISTRY/ase20-group1-2/ase20-practical-exercise/darkmode-service:latest ./dark-mode/
     - docker push $CI_REGISTRY/ase20-group1-2/ase20-practical-exercise/darkmode-service:latest
   <<: *darkmode-changes
 
 project-publish:
-  stage: docker
+  stage: publish
   script:
-    - docker build --pull -t $CI_REGISTRY/ase20-group1-2/ase20-practical-exercise/compiler-service:latest ./project/
+    - docker build --pull -t $CI_REGISTRY/ase20-group1-2/ase20-practical-exercise/project-service:latest ./project/
     - docker push $CI_REGISTRY/ase20-group1-2/ase20-practical-exercise/project-service:latest
   <<: *project-changes
+
+gateway-publish:
+  stage: publish
+  script:
+    - docker build --pull -t $CI_REGISTRY/ase20-group1-2/ase20-practical-exercise/gateway-service:latest ./gateway/
+    - docker push $CI_REGISTRY/ase20-group1-2/ase20-practical-exercise/gateway-service:latest
+  <<: *gateway-changes
+
+ui-publish:
+  stage: publish
+  script:
+    - docker build --pull -t $CI_REGISTRY/ase20-group1-2/ase20-practical-exercise/ui-service:latest ./ui/
+    - docker push $CI_REGISTRY/ase20-group1-2/ase20-practical-exercise/ui-service:latest
+  <<: *ui-changes
+
+discovery-publish:
+  stage: publish
+  script:
+    - docker build --pull -t $CI_REGISTRY/ase20-group1-2/ase20-practical-exercise/discovery-service:latest ./discoveryserver/
+    - docker push $CI_REGISTRY/ase20-group1-2/ase20-practical-exercise/discovery-service:latest
+  <<: *discovery-changes
 
 compiler-build:
   stage: build
@@ -66,6 +101,30 @@ project-build:
     - cd project
     - mvn clean compile
   <<: *project-changes
+
+gateway-build:
+  stage: build
+  script:
+    - cd gateway
+    - mvn clean compile
+  <<: *gateway-changes
+
+ui-build:
+  stage: build
+  script:
+    - cd ui
+    - mvn clean compile
+  artifacts:
+    paths:
+      - ui/target/
+  <<: *ui-changes
+
+discovery-build:
+  stage: build
+  script:
+    - cd discoveryserver
+    - mvn clean compile
+  <<: *discovery-changes
 
 compiler-test:
   stage: test
@@ -100,3 +159,33 @@ project-package:
     - cd project
     - mvn package
   <<: *project-changes
+
+gateway-package:
+  stage: package
+  variables:
+    MAVEN_OPTS: "-DskipTests=true"
+  script:
+    - cd gateway
+    - mvn package
+  <<: *gateway-changes
+
+ui-package:
+  stage: package
+  variables:
+    MAVEN_OPTS: "-DskipTests=true"
+  script:
+    - cd ui
+    - mvn package
+  artifacts:
+    paths:
+      - ui/target/*.jar
+  <<: *ui-changes
+
+discovery-package:
+  stage: package
+  variables:
+    MAVEN_OPTS: "-DskipTests=true"
+  script:
+    - cd discoveryserver
+    - mvn package
+  <<: *discovery-changes

@@ -39,8 +39,8 @@ zuul:
     darkmode-service:
       path: /api/dark-mode/**
       stripPrefix: false
-    ui-service:
-      path: /**
+#    ui-service:
+#      path: /**
 ribbon.ConnectTimeout: 10000
 ribbon.ReadTimeout: 10000
 # proxy:

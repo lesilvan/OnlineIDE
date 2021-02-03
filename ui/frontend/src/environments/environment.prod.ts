@@ -1,4 +1,8 @@
+// export const environment = {
+//   production: true,
+//   apiUrl: 'http://localhost:8000/api',
+// };
 export const environment = {
   production: true,
-  apiUrl: 'http://gateway:8000/api',
+  apiUrl: 'http://localhost:8000/api',
 };
