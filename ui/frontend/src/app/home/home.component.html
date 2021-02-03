@@ -6,6 +6,8 @@
   <p>Johannes Heilmann</p>
   <p>Silvan Wimmer</p>
 
-  <a mat-raised-button color="accent" routerLink="/manage-projects" routerLinkActive="active">
-    Login with GitLab LRZ</a>
+  <button *ngIf="!(authService.authenticated | async)" mat-raised-button color="accent" (click)="authService.login()">
+    Login with GitLab LRZ</button>
+
+
 </div>

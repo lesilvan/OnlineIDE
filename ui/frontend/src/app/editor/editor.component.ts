@@ -10,6 +10,7 @@ import {CompilerService} from "../compiler.service";
 import {SourceCode} from "../source-code";
 import {timer, Subscription} from "rxjs";
 import {DarkModeService} from "../dark-mode.service";
+import {AuthService} from "../auth.service";
 
 @Component({
   selector: 'app-editor',
@@ -35,7 +36,8 @@ export class EditorComponent implements OnInit {
     private sourceFileService: SourceFileService,
     private projectListService: ProjectListService,
     private compilerService: CompilerService,
-    private darkModeService: DarkModeService
+    private darkModeService: DarkModeService,
+    public authService: AuthService
   ) {
     this.project.sourceFiles = [];
     this.loadedSourceFile.id = 0;

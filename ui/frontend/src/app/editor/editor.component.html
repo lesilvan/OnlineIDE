@@ -6,18 +6,15 @@
         [routerLink]="['/manage-projects']"
         mat-raised-button
         color="primary"
-        routerLink="/home"
         routerLinkActive="active"
-        >Back</a
-      >
+        >Back
+      </a>
       <a
-        [routerLink]="['/home']"
         mat-raised-button
         color="primary"
-        routerLink="/home"
-        routerLinkActive="active"
-        >Logout</a
-      >
+        (click)="authService.logout()"
+        >Logout
+      </a>
     </div>
     <div class="side-bar-button-group">
       <button (click)="createNewFile()" mat-raised-button color="basic">

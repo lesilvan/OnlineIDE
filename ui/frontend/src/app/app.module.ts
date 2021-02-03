@@ -22,21 +22,20 @@ import { DialogBoxProjectComponent } from './dialog-box-project/dialog-box-proje
 import { EditorComponent } from './editor/editor.component';
 import { HomeComponent } from './home/home.component';
 import { ProjectManagementComponent } from './project-management/project-management.component';
-import { StartupComponent } from './startup/startup.component';
+import {AuthGuard} from "./auth.guard";
 
 const appRoutes: Routes = [
-  { path: 'startup', component: StartupComponent },
-  { path: 'home', component: HomeComponent },
-  { path: 'manage-projects', component: ProjectManagementComponent },
-  { path: 'ide/:id', component: EditorComponent },
-  { path: '', redirectTo: '/startup', pathMatch: 'full' },
+  { path: '/home', redirectTo: '/manage-projects', canActivate:[AuthGuard]},
+  { path: 'home', component: HomeComponent},
+  { path: 'manage-projects', component: ProjectManagementComponent, canActivate: [AuthGuard]},
+  { path: 'ide/:id', component: EditorComponent, canActivate: [AuthGuard]},
+  { path: '', redirectTo: '/manage-projects', pathMatch: 'full', canActivate: [AuthGuard]},
 ];
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     ProjectManagementComponent,
-    StartupComponent,
     DialogBoxProjectComponent,
     DialogBoxFileComponent,
     EditorComponent,

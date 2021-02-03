@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DialogBoxProjectComponent } from '../dialog-box-project/dialog-box-project.component';
 import { Project } from '../project';
 import { ProjectListService } from '../project-list.service';
+import {AuthService} from "../auth.service";
 
 @Component({
   selector: 'app-project-management',
@@ -18,7 +19,8 @@ export class ProjectManagementComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    private projectListService: ProjectListService
+    private projectListService: ProjectListService,
+    public authService: AuthService
   ) {}
 
   ngOnInit(): void {
