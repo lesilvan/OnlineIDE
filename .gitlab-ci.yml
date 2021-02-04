@@ -263,9 +263,9 @@ deploy:
     - touch $KEY_FILE && echo $SSH_PRIV_KEY | base64 -d > $KEY_FILE
     - chmod 400 $KEY_FILE
     - scp -o "StrictHostKeyChecking=no" -i $KEY_FILE $ENV_VARS $SSH_HOST:~/
-    - scp -o "StrictHostKeyChecking=no" -i $KEY_FILE docker-compose.prod.yml $SSH_HOST:~/
+    - scp -o "StrictHostKeyChecking=no" -i $KEY_FILE docker-compose.prod.yml $SSH_HOST:~/docker-compose.yaml
     - ssh -o "StrictHostKeyChecking=no" -i $KEY_FILE $SSH_HOST "sudo docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
-    - ssh -o "StrictHostKeyChecking=no" -i $KEY_FILE $SSH_HOST "source $ENV_VARS && sudo docker-compose -f docker-compose.prod.yml pull && sudo docker-compose -f docker-compose.prod.yml up --force-recreate -d"
+    - ssh -o "StrictHostKeyChecking=no" -i $KEY_FILE $SSH_HOST "source $ENV_VARS && sudo docker-compose pull && sudo docker-compose up --force-recreate -d"
   variables:
     SSH_HOST: raph.hohmann@34.107.85.135
     KEY_FILE: ase_practical.privkey
