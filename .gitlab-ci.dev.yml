@@ -1,0 +1,65 @@
+.project-rules: &project-changes
+  only:
+    changes:
+      - project/**/*
+
+stages:
+  - build
+  - package
+  - publish
+  - deploy
+
+# login to private docker registry
+before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+project-publish:
+  stage: publish
+  script:
+    - cd $IMAGE_DIR
+    - docker pull $IMAGE_NAME:latest || true
+    - docker build --tag $IMAGE_NAME:latest .
+    - docker push $IMAGE_NAME:latest
+  variables:
+    IMAGE_NAME: $CI_REGISTRY_IMAGE/project-service
+    IMAGE_DIR: project
+  <<: *project-changes
+
+project-build:
+  stage: build
+  script:
+    - cd project
+    - mvn clean compile
+  artifacts:
+    paths:
+      - project/target/*
+  <<: *project-changes
+
+project-package:
+  stage: package
+  variables:
+    MAVEN_OPTS: "-DskipTests=true"
+  script:
+    - cd project
+    - mvn package
+  artifacts:
+    paths:
+      - project/target/*.jar
+  <<: *project-changes
+
+deploy:
+  stage: deploy
+  script:
+    - touch $KEY_FILE && echo $SSH_PRIV_KEY | base64 -d > $KEY_FILE
+    - chmod 400 $KEY_FILE
+    - scp -o "StrictHostKeyChecking=no" -i $KEY_FILE docker-compose.prod.yml $SSH_HOST:~/
+    - ssh -o "StrictHostKeyChecking=no" -i $KEY_FILE $SSH_HOST "echo $POSTGRES_USER"
+    - ssh -o "StrictHostKeyChecking=no" -i $KEY_FILE $SSH_HOST "sudo docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY"
+    - ssh -o "StrictHostKeyChecking=no" -i $KEY_FILE $SSH_HOST "sudo docker-compose -f docker-compose.prod.yml pull && sudo docker-compose -f docker-compose.prod.yml up --force-recreate -d"
+  variables:
+    SSH_HOST: raph.hohmann@34.107.85.135
+    KEY_FILE: ase_practical.privkey
+    # TODO: Remove
+    #  only:
+    #    refs:
+    #      - master
