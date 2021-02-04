@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { DialogBoxProjectComponent } from '../dialog-box-project/dialog-box-project.component';
+import {DialogBoxComponent, DialogData} from '../dialog-box/dialog-box.component';
 import { Project } from '../project';
 import { ProjectListService } from '../project-list.service';
 import {AuthService} from "../auth.service";
@@ -28,34 +28,51 @@ export class ProjectManagementComponent implements OnInit {
     this.dataSource = new MatTableDataSource<Project>(this.projects);
   }
 
-  openDialog(project: Project, action: string): any {
-    const dialogRef = this.dialog.open(DialogBoxProjectComponent, {
-      width: '250px',
-      data: { action: action, project: project },
-    });
+  openDialog(project: Project, dialogData: DialogData): any {
+    const dialogRef = this.dialog.open(DialogBoxComponent, {width:'250px', data:dialogData});
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
-      if (result.event == 'Create new') {
-        this.addProjectData(result.project);
+      if (result.event == 'Create') {
+        project.name = result.input;
+        console.log("Updated Project:", project);
+        this.addProjectData(project);
       } else if (result.event == 'Rename') {
-        this.updateProjectData(result.project);
+        project.name = result.input;
+        console.log("Updated Project:", project);
+        this.updateProjectData(project);
       } else if (result.event == 'Delete') {
-        this.deleteProjectData(result.project);
+        this.deleteProjectData(project);
       }
     });
   }
   // Functions initializing dialog correctly
   addProject(): void {
-    let project = new Project();
-    this.openDialog(project, 'Create new');
+    let dialogData: DialogData = {
+      title: "Create new project",
+      fieldTitle: "Project name",
+      fieldInput: "",
+      action: "Create"
+    }
+    this.openDialog(new Project(), dialogData);
   }
 
   editProject(project: Project): void {
-    this.openDialog(project, 'Rename');
+    let dialogData: DialogData = {
+      title: "Rename project",
+      fieldTitle: "New project name",
+      fieldInput: project.name,
+      action: "Rename"
+    }
+    this.openDialog(project, dialogData);
   }
 
   deleteProject(project: Project): void {
-    this.openDialog(project, 'Delete');
+    let dialogData: DialogData = {
+      title: "Delete project",
+      fieldTitle: "",
+      fieldInput: project.name,
+      action: "Delete"
+    }
+    this.openDialog(project, dialogData);
   }
 
   // Functions taking care about manipulated data (storage)

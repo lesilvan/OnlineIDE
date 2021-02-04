@@ -4,7 +4,7 @@ import { SourceFile } from '../source-file';
 import { SourceFileService } from '../source-file.service';
 import {ProjectListService} from "../project-list.service";
 import {Project} from "../project";
-import {DialogBoxFileComponent} from "../dialog-box-file/dialog-box-file.component";
+import {DialogBoxComponent, DialogData} from "../dialog-box/dialog-box.component";
 import {MatDialog} from "@angular/material/dialog";
 import {CompilerService} from "../compiler.service";
 import {SourceCode} from "../source-code";
@@ -74,15 +74,27 @@ export class EditorComponent implements OnInit {
 
   /* Ignitable methods from user perspective */
   createNewFile() {
-    this.openFileDialog(new SourceFile(), "Create new");
+    let dialogData: DialogData = {
+      title: "Create new file",
+      fieldTitle: "Filename",
+      fieldInput: "",
+      action: "Create"
+    }
+    this.openFileDialog(new SourceFile(), dialogData);
   }
 
   renameFile(id: number){
     // Load current version of sourceFile
     this.sourceFileService.loadSourceFile(id)
       .subscribe((sourceFile) => {
+        let dialogData: DialogData = {
+          title: "Rename file",
+          fieldTitle: "New Filename",
+          fieldInput: sourceFile.name,
+          action: "Rename"
+        }
         // Try to rename it
-        this.openFileDialog(sourceFile, "Rename");
+        this.openFileDialog(sourceFile, dialogData);
       });
   }
 
@@ -90,8 +102,14 @@ export class EditorComponent implements OnInit {
     // Load current version of sourceFile (check if still existent)
     this.sourceFileService.loadSourceFile(id)
       .subscribe((sourceFile) => {
+        let dialogData: DialogData = {
+          title: "Delete file",
+          fieldTitle: "",
+          fieldInput: sourceFile.name,
+          action: "Delete"
+        }
         // Try to delete it
-        this.openFileDialog(sourceFile, "Delete");
+        this.openFileDialog(sourceFile, dialogData);
       });
   }
 
@@ -148,18 +166,17 @@ export class EditorComponent implements OnInit {
 
 
   /* Dialog Handler (as mediator between user wish and ignition of intended methodology */
-  openFileDialog(sourceFile: SourceFile, action: string): any {
-    const dialogRef = this.dialog.open(DialogBoxFileComponent, {
-      width: '250px',
-      data: { action: action, sourceFile: sourceFile},
-    });
+  openFileDialog(sourceFile: SourceFile, dialogData: DialogData): any {
+    const dialogRef = this.dialog.open(DialogBoxComponent, {width: '250px', data: dialogData});
     dialogRef.afterClosed().subscribe((result) => {
-      if (result.event == 'Create new') {
-        this.createSourceFile(result.sourceFile);
+      if (result.event == 'Create') {
+        sourceFile.name = result.input;
+        this.createSourceFile(sourceFile);
       } else if (result.event == 'Rename') {
-        this.renameSourceFile(result.sourceFile);
+        sourceFile.name = result.input;
+        this.renameSourceFile(sourceFile);
       } else if (result.event == 'Delete') {
-        this.deleteSourceFile(result.sourceFile);
+        this.deleteSourceFile(sourceFile);
       }});
   }
 

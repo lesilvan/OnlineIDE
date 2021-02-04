@@ -17,12 +17,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { AppComponent } from './app.component';
-import { DialogBoxFileComponent } from './dialog-box-file/dialog-box-file.component';
-import { DialogBoxProjectComponent } from './dialog-box-project/dialog-box-project.component';
 import { EditorComponent } from './editor/editor.component';
 import { HomeComponent } from './home/home.component';
 import { ProjectManagementComponent } from './project-management/project-management.component';
 import {AuthGuard} from "./auth.guard";
+import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 
 const appRoutes: Routes = [
   { path: '/home', redirectTo: '/manage-projects', canActivate:[AuthGuard]},
@@ -36,9 +35,8 @@ const appRoutes: Routes = [
     AppComponent,
     HomeComponent,
     ProjectManagementComponent,
-    DialogBoxProjectComponent,
-    DialogBoxFileComponent,
     EditorComponent,
+    DialogBoxComponent,
   ],
   imports: [
     BrowserModule,
