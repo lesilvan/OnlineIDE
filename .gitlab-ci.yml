@@ -254,6 +254,7 @@ discovery-package:
 deploy:
   stage: deploy
   script:
+    - echo $EUREKA_SERVER
     - touch $KEY_FILE && echo $SSH_PRIV_KEY | base64 -d > $KEY_FILE
     - chmod 400 $KEY_FILE
     - scp -o "StrictHostKeyChecking=no" -i $KEY_FILE docker-compose.prod.yml $SSH_HOST:~/
