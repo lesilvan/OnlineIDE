@@ -25,9 +25,9 @@
       - ui/**/*
 
 .discovery-rules: &discovery-changes
-  rules:
-    - changes:
-      - discoveryserver/*
+  only:
+    changes:
+      - discoveryserver/**/*
 stages:
   - build
   - test

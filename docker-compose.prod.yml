@@ -20,45 +20,45 @@ services:
     ports:
       - "${EUREKA_PORT}:${EUREKA_PORT}"
 
-  gateway:
-    image: gitlab.lrz.de:5005/ase20-group1-2/ase20-practical-exercise/gateway-service:latest
-    restart: on-failure
-    environment:
-      - EUREKA
-    networks:
-      - online-ide
-    environment:
-      - EUREKA_SERVER=${EUREKA_SERVER}
-    ports:
-      - "8000:8000"
-
-  compiler:
-    image: gitlab.lrz.de:5005/ase20-group1-2/ase20-practical-exercise/compiler-service:latest
-    restart: on-failure
-    networks:
-      - online-ide
-    environment:
-      - EUREKA_SERVER=${EUREKA_SERVER}
-
-  darkmode:
-    image: gitlab.lrz.de:5005/ase20-group1-2/ase20-practical-exercise/darkmode-service:latest
-    restart: on-failure
-    networks:
-      - online-ide
-    environment:
-      - EUREKA_SERVER=${EUREKA_SERVER}
-    ports:
-      - "8083:8083"
-
-  ui:
-    image: gitlab.lrz.de:5005/ase20-group1-2/ase20-practical-exercise/ui-service:latest
-    restart: on-failure
-    networks:
-      - online-ide
-    ports:
-      - "8080:8080"
-    environment:
-      - EUREKA_SERVER=${EUREKA_SERVER}
+        #  gateway:
+        #    image: gitlab.lrz.de:5005/ase20-group1-2/ase20-practical-exercise/gateway-service:latest
+        #    restart: on-failure
+        #    environment:
+        #      - EUREKA
+        #    networks:
+        #      - online-ide
+        #    environment:
+        #      - EUREKA_SERVER=${EUREKA_SERVER}
+        #    ports:
+        #      - "8000:8000"
+        #
+        #  compiler:
+        #    image: gitlab.lrz.de:5005/ase20-group1-2/ase20-practical-exercise/compiler-service:latest
+        #    restart: on-failure
+        #    networks:
+        #      - online-ide
+        #    environment:
+        #      - EUREKA_SERVER=${EUREKA_SERVER}
+        #
+        #  darkmode:
+        #    image: gitlab.lrz.de:5005/ase20-group1-2/ase20-practical-exercise/darkmode-service:latest
+        #    restart: on-failure
+        #    networks:
+        #      - online-ide
+        #    environment:
+        #      - EUREKA_SERVER=${EUREKA_SERVER}
+        #    ports:
+        #      - "8083:8083"
+        #
+        #  ui:
+        #    image: gitlab.lrz.de:5005/ase20-group1-2/ase20-practical-exercise/ui-service:latest
+        #    restart: on-failure
+        #    networks:
+        #      - online-ide
+        #    ports:
+        #      - "8080:8080"
+        #    environment:
+        #      - EUREKA_SERVER=${EUREKA_SERVER}
 
   postgresdb:
     image: postgres:latest
@@ -85,3 +85,4 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
+      - EUREKA_SERVER=${EUREKA_SERVER}
