@@ -33,6 +33,7 @@ stages:
   - test
   - package
   - publish
+  - deploy
 
 # login to private docker registry
 before_script:
