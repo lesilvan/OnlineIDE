@@ -113,7 +113,24 @@ export class EditorComponent implements OnInit {
       });
   }
 
-  shareProject() {}
+  shareProject() {
+    let dialogData: DialogData = {
+      title: "Share project with another user",
+      fieldTitle: "Username",
+      fieldInput: "",
+      action: "Share"
+    }
+    const dialogRef = this.dialog.open(DialogBoxComponent, {width: '250px', data: dialogData});
+    dialogRef.afterClosed().subscribe((result) => {
+      let username = result.input;
+      // Try to share project in backend
+      this.projectListService.shareProject(this.project, username).subscribe(
+        (project) => {
+          console.log(project);
+        }
+      );
+    });
+  }
 
   saveFile() {
     this.sourceFileService.saveSourceCode(
