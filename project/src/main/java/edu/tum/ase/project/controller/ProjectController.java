@@ -2,10 +2,10 @@ package edu.tum.ase.project.controller;
 
 import edu.tum.ase.project.model.Project;
 import edu.tum.ase.project.model.ProjectSourceFile;
+import edu.tum.ase.project.model.User;
 import edu.tum.ase.project.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +15,9 @@ import java.util.List;
 public class ProjectController {
     @Autowired
     private ProjectService service;
+
+    @Autowired
+    private OAuth2RestOperations restTemplate;
 
     @GetMapping("/")
     public List<Project> index() {
@@ -57,5 +60,23 @@ public class ProjectController {
         Project p = service.findById(id);
         var isRemoved = service.delete(p);
         return isRemoved;
+    }
+
+    @PostMapping("/{id}/share")
+    public Project questionApi(@RequestBody String username, @PathVariable(name="id") String id) {
+        // String url = "https://gitlab.lrz.de/api/v4/search?scope=users&search=Heilmann"; search e-mail or name
+        // String url = "https://gitlab.lrz.de/api/v4/users?username=silvan11"; search via username
+        String searchUrl = "https://gitlab.lrz.de/api/v4/users?username=" + username;
+        User[] users = restTemplate.getForObject(searchUrl, User[].class);
+        System.out.println(users.toString());
+        int i = 0;
+        for (User user: users) {
+            System.out.println(user.getId());
+            System.out.println(user.getName());
+            System.out.println(user.getUsername());
+            System.out.println("end of user");
+        }
+        Project p = service.findById(id);
+        return p;
     }
 }
