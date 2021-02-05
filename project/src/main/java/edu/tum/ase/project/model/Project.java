@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -20,6 +21,11 @@ public class Project {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @ElementCollection
+    @CollectionTable(name="project_project_users", joinColumns = @JoinColumn(name="id"))
+    @Column(name = "usersIds")
+    private Set<String> userIds = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<ProjectSourceFile> sourceFiles = Collections.emptySet();
@@ -79,5 +85,13 @@ public class Project {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<String> getUserIds() {
+        return userIds;
+    }
+
+    public void addUser(String user) {
+        this.userIds.add(user);
     }
 }

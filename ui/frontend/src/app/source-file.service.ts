@@ -54,4 +54,14 @@ export class SourceFileService {
       { responseType: 'json' }
     );
   }
+
+  /** POST update userIds */
+  updateUserIds(sourceFile: SourceFile, userIds: String[]): Observable<SourceFile> {
+    return this.http.post<SourceFile>(
+      this.sourceFilesUrl + String(sourceFile.id) + '/update-users',
+      userIds,
+      {responseType:"json"}
+    )
+  }
+
 }

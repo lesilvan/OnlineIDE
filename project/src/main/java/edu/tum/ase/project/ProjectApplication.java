@@ -9,12 +9,15 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
 import javax.sql.DataSource;
 import java.util.List;
 
 @SpringBootApplication
 @EnableEurekaClient
+@EnableResourceServer
 public class ProjectApplication implements CommandLineRunner {
     private static final Logger log = LoggerFactory.getLogger(ProjectApplication.class);
 
@@ -23,6 +26,9 @@ public class ProjectApplication implements CommandLineRunner {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private OAuth2RestOperations restTemplate;
 
     public static void main(String[] args) {
         SpringApplication.run(ProjectApplication.class, args);
