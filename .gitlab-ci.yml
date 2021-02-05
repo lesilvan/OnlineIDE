@@ -270,7 +270,6 @@ deploy:
     SSH_HOST: raph.hohmann@34.107.85.135
     KEY_FILE: ase_practical.privkey
     ENV_VARS: .env
-    # TODO: Remove
-    #  only:
-    #    refs:
-    #      - master
+  only:
+    refs:
+      - master
