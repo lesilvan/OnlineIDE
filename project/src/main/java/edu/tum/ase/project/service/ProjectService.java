@@ -4,13 +4,12 @@ import edu.tum.ase.project.model.Project;
 import edu.tum.ase.project.model.ProjectSourceFile;
 import edu.tum.ase.project.repository.ProjectRepository;
 import edu.tum.ase.project.repository.ProjectSourceFileRepository;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProjectService {
@@ -24,15 +23,18 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
+    @PreAuthorize("#project.userIds.contains(authentication.principal)")
     public Project update(Project project) {
         return projectRepository.save(project);
     }
 
+    @PreAuthorize("#project.userIds.contains(authentication.principal)")
     public Project updateName(Project project, String name) {
         project.setName(name);
         return projectRepository.save(project);
     }
 
+    @PreAuthorize("#project.userIds.contains(authentication.principal)")
     public Project addSourceFile(Project project, ProjectSourceFile sourceFile) {
         sourceFile = sourceFileRepository.save(sourceFile);
         project.addSourceFile(sourceFile);
@@ -40,6 +42,7 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
+    @PreAuthorize("#project.userIds.contains(authentication.principal)")
     public Project removeSourceFile(Project project, ProjectSourceFile sourceFile) {
         project.removeSourceFile(sourceFile);
         project = projectRepository.save(project);
@@ -48,13 +51,13 @@ public class ProjectService {
         return project;
     }
 
-    public Project findById(String id) {
+    public Project findById(String id) throws IllegalAccessError{
         Optional<Project> project = projectRepository.findById(id);
 
         if (project.isPresent()) {
             return project.get();
         } else {
-            throw new IllegalAccessError();
+            throw new IllegalAccessError("Project with id "+id+" could not be found");
         }
     }
 
@@ -62,6 +65,7 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
+    @PreAuthorize("#project.userIds.contains(authentication.principal)")
     public boolean delete(Project project) {
         try {
             projectRepository.delete(project);

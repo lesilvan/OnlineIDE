@@ -9,6 +9,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "project_source_files")
@@ -21,6 +23,11 @@ public class ProjectSourceFile {
 
     @Column(name = "source_file_name", nullable = false)
     private String name;
+
+    @ElementCollection
+    @CollectionTable(name="source_file_project_users", joinColumns = @JoinColumn(name="id"))
+    @Column(name = "usersIds")
+    private Set<String> userIds = new HashSet<>();
 
     protected ProjectSourceFile() {
     }
@@ -85,5 +92,17 @@ public class ProjectSourceFile {
         }
 
         return sourceCode;
+    }
+
+    public Set<String> getUserIds() {
+        return userIds;
+    }
+
+    public void addUser(String user) {
+        this.userIds.add(user);
+    }
+
+    public void setUserIds(Set<String> userIds) {
+        this.userIds = userIds;
     }
 }

@@ -27,7 +27,9 @@ export class ProjectListService {
 
   /** POST new project to server */
   addProject(project: Project): Observable<Project> {
-    return this.http.post<Project>(this.projectsUrl + 'create', project, {});
+    return this.http.post<Project>(this.projectsUrl + 'create', project, {
+      withCredentials: true,
+    });
   }
 
   /** POST rename project */
@@ -51,6 +53,15 @@ export class ProjectListService {
       observe: 'body',
       responseType: 'json',
     });
+  }
+
+  /** GET share project */ //TODO: Make POST and transfer name of guy to share with
+  shareProject(project: Project, username: String): Observable<Project> {
+    return this.http.post<Project>(
+      this.projectsUrl + String(project.id) + '/share',
+      username,
+      { responseType: "json"}
+      );
   }
 
   /** POST add sourceFile to project */

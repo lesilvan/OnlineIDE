@@ -3,6 +3,18 @@ spring:
     name: project-service
   profiles:
     active: dev # or prod --> decides which database to use (either H2 in-memory db or postgres)
+security:
+  oauth2:
+    client:
+      clientId: f5adcf1af55584411d38fe146dccafd6e791771a8e8e18739d229f2d789a9a2a
+      clientSecret: e0b58ba7e75b808991e550dd0bf6e11402b0551eb75cba19a2677996045fc10e
+      accessTokenUri: https://gitlab.lrz.de/oauth/token
+      userAuthorizationUri: https://gitlab.lrz.de/oauth/authorize
+      scope:
+        - read_user
+        - api
+    resource:
+      userInfoUri: https://gitlab.lrz.de/api/v4/user
 server:
   port: ${PROJECT_PORT:8081}
   servlet:
