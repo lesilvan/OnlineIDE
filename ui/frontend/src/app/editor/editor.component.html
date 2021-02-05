@@ -25,7 +25,6 @@
       </button>
     </div>
     <h1 class="mat-h1" >{{project.name}}</h1>
-
     <mat-action-list>
       <mat-list-item *ngFor="let file of project.sourceFiles.sort(compareSourceFiles)">
         <button
@@ -42,6 +41,12 @@
         </mat-icon>
       </mat-list-item>
     </mat-action-list>
+    <div class="side-bar-shared-users">
+      <mat-list>
+        <mat-list-item *ngFor="let user of project.userIds">{{user}}
+        </mat-list-item>
+      </mat-list>
+    </div>
   </div>
 
   <div class="main-view">

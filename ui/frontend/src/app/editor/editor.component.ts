@@ -126,6 +126,7 @@ export class EditorComponent implements OnInit {
       // Try to share project in backend
       this.projectListService.shareProject(this.project, username).subscribe(
         (project) => {
+          this.project = project;
           console.log(project);
         }
       );
@@ -250,6 +251,7 @@ export class EditorComponent implements OnInit {
   // SourceFile Database
   private createSourceFile(sourceFile: SourceFile): void {
     // Create source file (in sourceFile database)
+    sourceFile.userIds = this.project.userIds;
     this.sourceFileService.createSourceFile(sourceFile)
       .subscribe((sourceFile) => {
         // Add sourceFile to project (in project DB)
