@@ -1,4 +1,4 @@
-package edu.tum.ase.compiler.unit;
+package edu.tum.ase.compiler.integration;
 
 import edu.tum.ase.compiler.controller.CompilerController;
 import edu.tum.ase.compiler.model.SourceCode;
@@ -17,92 +17,79 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Ignore
-public class CompilerControllerTests {
+public class CompilerIntegrationTests {
+    /** Testing integration of Compiler with os/filesystem under the hood */
 
     @Autowired
-    private CompilerController controller;
+    private CompilerController systemUnderTest;
 
     @Test
-    public void CCompilationSuccess() {
+    public void should_ReturnCompilableTrue_When_CCodeCompilable() {
         SourceCode sc = new SourceCode();
         sc.setFileName("helloworld.c");
         String code = "#include <stdio.h>\n\tint main() { printf(\"hello world.\"); }";
         sc.setCode(code);
 
         try {
-            controller.compile(sc);
+            systemUnderTest.compile(sc);
         } catch(IOException e) {
             fail("Should not throw exception.");
             return;
         }
 
-        assertEquals(sc.getCompilable(), true);
+        assertTrue(sc.getCompilable());
     }
 
     @Test
-    public void CCompilationFail() {
+    public void should_ReturnCompilableFalseAndErrorMessage_When_CCodeNotCompilable() {
         SourceCode sc = new SourceCode();
         sc.setFileName("helloworld.c");
         String semicolonMissing = "#include <stdio.h>\n\tint main() { printf(\"hello world.\") }";
         sc.setCode(semicolonMissing);
 
         try {
-            controller.compile(sc);
+            systemUnderTest.compile(sc);
         } catch(IOException e) {
             fail("Should not throw exception.");
             return;
         }
 
-        assertEquals(sc.getCompilable(), false);
+        assertFalse(sc.getCompilable());
         assertNotEquals(sc.getStderr(), null);
     }
 
     @Test
-    public void JavaCompilationSuccess() {
+    public void should_ReturnCompilableTrue_When_JavaCodeCompilable() {
         SourceCode sc = new SourceCode();
         sc.setFileName("HelloWorld.java");
         String code = "class HelloWorld { public static void main(String args[]) { System.out.println(\"hello world.\"); } }";
         sc.setCode(code);
 
         try {
-            controller.compile(sc);
+            systemUnderTest.compile(sc);
         } catch(IOException e) {
             fail("Should not throw exception.");
             return;
         }
 
-        assertEquals(sc.getCompilable(), true);
+        assertTrue(sc.getCompilable());
     }
 
     @Test
-    public void JavaCompilationFail() {
+    public void should_ReturnCompilableFalseAndErrorMessage_When_JavaCodeNotCompilable() {
         SourceCode sc = new SourceCode();
         sc.setFileName("HelloWorld.java");
         String semicolonMissing = "class HelloWorld { public static void main(String args[]) { System.out.println(\"hello world.\") } }";
         sc.setCode(semicolonMissing);
 
         try {
-            controller.compile(sc);
+            systemUnderTest.compile(sc);
         } catch(IOException e) {
             fail("Should not throw exception.");
             return;
         }
 
-        assertEquals(sc.getCompilable(), false);
+        assertFalse(sc.getCompilable());
         assertNotEquals(sc.getStderr(), null);
-    }
-
-    @Test
-    public void UnknownFileExtension() {
-        SourceCode sc = new SourceCode();
-        sc.setFileName("wrong-extension.abc");
-
-        // should throw error
-        try {
-            controller.compile(sc);
-            fail("Should have thrown IllegalArgumentException.");
-        } catch(Exception e) {
-            assert(e instanceof IllegalArgumentException);
-        }
     }
 }
