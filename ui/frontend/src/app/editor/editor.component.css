@@ -21,6 +21,13 @@
   width: 100%;
 }
 
+mat-list-item button {
+  width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
 .main-view {
   width: 100%;
 
