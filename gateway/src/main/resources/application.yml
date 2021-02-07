@@ -24,7 +24,6 @@ zuul.host.connect-timeout-millis: 20000
 zuul:
   ignoredServices: '*'
   ignoredPatterns:
-    - /user
     - /login
     - /logout
     - /authenticated
