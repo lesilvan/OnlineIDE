@@ -17,19 +17,27 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { AppComponent } from './app.component';
+import { AuthGuard } from './auth.guard';
+import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { EditorComponent } from './editor/editor.component';
 import { HomeComponent } from './home/home.component';
 import { ProjectManagementComponent } from './project-management/project-management.component';
-import {AuthGuard} from "./auth.guard";
-import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 
 const appRoutes: Routes = [
-  { path: '/home', redirectTo: '/manage-projects', canActivate:[AuthGuard]},
-  { path: 'home', component: HomeComponent},
-  { path: 'manage-projects', component: ProjectManagementComponent, canActivate: [AuthGuard]},
-  { path: 'ide/:id', component: EditorComponent, canActivate: [AuthGuard]},
-  { path: '', redirectTo: '/manage-projects', pathMatch: 'full', canActivate: [AuthGuard]},
+  { path: 'home', component: HomeComponent },
+  {
+    path: 'manage-projects',
+    component: ProjectManagementComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'ide/:id', component: EditorComponent, canActivate: [AuthGuard] },
+  {
+    path: '',
+    redirectTo: '/manage-projects',
+    pathMatch: 'full',
+  },
 ];
+
 @NgModule({
   declarations: [
     AppComponent,

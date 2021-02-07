@@ -1,13 +1,27 @@
-<div style="text-align: center;">
-  <h1 class="mat-display-4">Welcome to the OnlineIDE </h1>
-  <h3 class="mat-display-2">A project for Advanced Topics of Software Engineering @TUM.
-    Submission of group 1-2 with the following members:</h3>
+<div style="text-align: center">
+  <h1 class="mat-display-4">Welcome to the OnlineIDE</h1>
+  <h3 class="mat-display-2">
+    A project for Advanced Topics of Software Engineering @TUM. Submission of
+    group 1-2 with the following members:
+  </h3>
   <p>Raphael Hohmann</p>
   <p>Johannes Heilmann</p>
   <p>Silvan Wimmer</p>
 
-  <button *ngIf="!(authService.authenticated | async)" mat-raised-button color="accent" (click)="authService.login()">
-    Login with GitLab LRZ</button>
-
-
+  <button
+    *ngIf="!(authService.authenticated | async)"
+    mat-raised-button
+    color="accent"
+    (click)="authService.login()"
+  >
+    Login with GitLab LRZ
+  </button>
+  <a
+    *ngIf="authService.authenticated | async"
+    [routerLink]="['/manage-projects']"
+    mat-raised-button
+    color="primary"
+    routerLinkActive="active"
+    >Continue
+  </a>
 </div>
