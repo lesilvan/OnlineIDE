@@ -28,12 +28,6 @@ public class GatewayApplication {
         SpringApplication.run(GatewayApplication.class, args);
     }
 
-    @RequestMapping("/user")
-    public Principal user() {
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
-
-
     @GetMapping("/authenticated")
     public boolean authenticated() {
         SecurityContext securityContext = SecurityContextHolder.getContext();

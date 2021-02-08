@@ -39,10 +39,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .cors()
+                //.csrf().disable()
+                //.cors()
 
-                .and()
+                //.and()
                     .logout()
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .invalidateHttpSession(true)
@@ -52,11 +52,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
                         })
 
-                //.and()
-                    //.csrf()
+                .and()
+                    .csrf()
                     //.csrfTokenRepository(csrfTokenRepository())
                     //.requireCsrfProtectionMatcher(csrfProtectionMatcher(patterns))
-                    //.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 
                 .and()
                     .authorizeRequests()
@@ -64,7 +64,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/**").authenticated();
 
                 //.and()
-                    //.addFilterAfter(new CsrfGrantingFilter() , SessionManagementFilter.class);
+                //    .addFilterAfter(new CsrfGrantingFilter() , SessionManagementFilter.class);
     }
 
     private CsrfTokenRepository csrfTokenRepository() {
@@ -74,22 +74,22 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
 
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        final UrlBasedCorsConfigurationSource source = new     UrlBasedCorsConfigurationSource();
-        final CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin(CorsConfiguration.ALL);
-        config.setAllowedHeaders(Collections.singletonList(CorsConfiguration.ALL));
-        config.addAllowedMethod("OPTIONS");
-        config.addAllowedMethod("HEAD");
-        config.addAllowedMethod("GET");
-        config.addAllowedMethod("PUT");
-        config.addAllowedMethod("POST");
-        config.addAllowedMethod("DELETE");
-        config.addAllowedMethod("PATCH");
-        config.setAllowedHeaders(Lists.newArrayList("X-XSRF-TOKEN", "XSRF-TOKEN", "Content-Type"));
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        final UrlBasedCorsConfigurationSource source = new     UrlBasedCorsConfigurationSource();
+//        final CorsConfiguration config = new CorsConfiguration();
+//        config.setAllowCredentials(true);
+//        config.addAllowedOrigin(CorsConfiguration.ALL);
+//        config.setAllowedHeaders(Collections.singletonList(CorsConfiguration.ALL));
+//        config.addAllowedMethod("OPTIONS");
+//        config.addAllowedMethod("HEAD");
+//        config.addAllowedMethod("GET");
+//        config.addAllowedMethod("PUT");
+//        config.addAllowedMethod("POST");
+//        config.addAllowedMethod("DELETE");
+//        config.addAllowedMethod("PATCH");
+//        config.setAllowedHeaders(Lists.newArrayList("X-XSRF-TOKEN", "XSRF-TOKEN", "Content-Type"));
+//        source.registerCorsConfiguration("/**", config);
+//        return source;
+//    }
 }

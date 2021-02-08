@@ -35,7 +35,7 @@ public class CompilerServiceE2ETest {
     private ObjectMapper mapper;
 
     @Test
-    public void JavaCompilationSuccess() throws Exception {
+    public void should_ReturnCompilableTrue_When_JavaCodeCompilable() throws Exception {
         SourceCode sc = new SourceCode();
         sc.setFileName("HelloWorld.java");
         String code = "class HelloWorld { public static void main(String args[]) { System.out.println(\"hello world.\"); } }";
@@ -49,7 +49,7 @@ public class CompilerServiceE2ETest {
     }
 
     @Test
-    public void JavaCompilationFail() throws Exception {
+    public void should_ReturnCompilableFalse_When_JavaCodeNotCompilable() throws Exception {
         SourceCode sc = new SourceCode();
         sc.setFileName("HelloWorld.java");
         String code = "class HelloWorld { public static void main(String args[]) { System.out.println(\"hello world.\") } }";
@@ -64,7 +64,7 @@ public class CompilerServiceE2ETest {
     }
 
     @Test
-    public void CCompilationSuccess() throws Exception {
+    public void should_ReturnCompilableTrue_When_CCodeCompilable() throws Exception {
         SourceCode sc = new SourceCode();
         sc.setFileName("helloworld.c");
         String code = "#include <stdio.h>\n\tint main() { printf(\"hello world.\"); }";
@@ -78,7 +78,7 @@ public class CompilerServiceE2ETest {
     }
 
     @Test
-    public void CCompilationFail() throws Exception {
+    public void should_ReturnCompilableFalse_When_CCodeNotCompilable() throws Exception {
         SourceCode sc = new SourceCode();
         sc.setFileName("helloworld.c");
         String code = "#include <stdio.h>\n\tint main() { printf(\"hello world.\") }";

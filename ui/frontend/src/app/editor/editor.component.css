@@ -5,6 +5,9 @@
 }
 
 .side-bar {
+  display: flex;
+  flex-direction: column;
+
   width: 240px;
   min-width: 240px;
 }
@@ -19,6 +22,17 @@
 
 .side-bar-button-group .mat-button-base {
   width: 100%;
+}
+
+mat-list-item button {
+  width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
+.side-bar-shared-users {
+  margin-top: auto;
 }
 
 .main-view {
