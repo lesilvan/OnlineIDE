@@ -2,7 +2,7 @@
 
 ## Docker: Local Setup
 
-First compile, package and then build all local docker images with the provided script. Please make sure that all spring-boot services contain an `application-prod.yaml` file, where they define port `:8080` as their communication port, because docker containers are built with production-environment in mind, but you can use the mesh also locally for dev purposes. Keep it mind that when you change sourcecode, you have to rebuild the images!
+First compile, package and then build all local docker images with the provided script. Keep it mind that when you change sourcecode, you have to rebuild the images!
 
 ```
 $ ./docker-build.sh
@@ -15,6 +15,7 @@ Source environment variables used for setting up database configuration:
 ```
 $ set -a
 $ source .env.dev
+$ source .env.ci
 ```
 
 Use docker-compose to setup a microservice mesh with an according project database:
@@ -29,23 +30,32 @@ To gracefully remove artifacts and shutdown the environment, please use:
 $ docker-compose down
 ```
 
-## Docker: Production Runtime
+## Docker: Production Runtime (via gitlab-runner)
 
 *This is for use on the cloud server.*
 
-All docker images reside in this project's local [container registry](https://gitlab.lrz.de/ase20-group1-2/ase20-practical-exercise/container_registry). To use it, you have to login with your credentials (further info [here](https://docs.gitlab.com/ee/user/packages/container_registry/#authenticate-by-using-gitlab-cicd)).
+The runner dependencies are as follows:
+```
+    - openjdk >= 15.0
+    - maven >= 3.5
+    - docker >= 18.0
+```
+
+All building logic resides in `.gilab-ci.yml`. The built jars then get copied to docker images where they then can be run as containers.
+
+All docker images reside in this project's local [container registry](https://gitlab.lrz.de/ase20-group1-2/ase20-practical-exercise/container_registry). To use it, you have to login the runner with your credentials (further info [here](https://docs.gitlab.com/ee/user/packages/container_registry/#authenticate-by-using-gitlab-cicd)).
 
 ```
 $ docker login docker login -u <username> -p <access_token> gitlab.lrz.de:5005
 ```
 
-Then you can simply use:
+In production, the runner copies `docker-compose.prod.yml` to the GCP server and issues a simple:
 
 ```
 $ docker-compose up
 ```
 
-This will pull all images from the local registry and spin up containers according to this project's `docker-compose.yml`.
+This will pull all images from the local gitlab registry and spin up all needed containers.
 
 
 ## Run app without docker
