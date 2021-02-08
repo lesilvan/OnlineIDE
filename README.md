@@ -2,7 +2,7 @@
 
 ## Code Freeze
 
-*This project has been frozen on 8th of febuary, 15:21.*
+*This project has been frozen on 8th of february, 15:21.*
 
 ## Docker: Local Setup
 
