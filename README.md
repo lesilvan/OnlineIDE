@@ -1,5 +1,9 @@
 # ASE Practical Exercise - Group 1-2 - WS20
 
+## Code Freeze
+
+*This project has freezed on 8th of febuary, 15:21.*
+
 ## Docker: Local Setup
 
 First compile, package and then build all local docker images with the provided script. Keep it mind that when you change sourcecode, you have to rebuild the images!
@@ -57,29 +61,3 @@ $ docker-compose up
 
 This will pull all images from the local gitlab registry and spin up all needed containers.
 
-
-## Run app without docker
-
-### Dependencies
-
-```
-$ yes n | npm install --global @angular/cli
-$ cd frontend
-$ yes n | npm install --save-dev @angular-devkit/build-angular
-```
-
-How to run this project
-
-Start UI only (without microservice integration)
-1. Change current path into subfolder UI/FRONTEND: `cd ui/frontend`
-2. Run `ng serve`
-3. Navigate to `http://localhost:4200/home` in the browser
-
-Start UI (integrated in Microservice)
-1. Change current path into subfolder UI/FRONTEND: `cd ui/frontend`
-2. Build static files with `ng build --prod --outputPath=../src/main/resources/static/`
-3. Start the spring boot UI application (main in UiApplication)
-4. Navigate to `http://localhost:8080/home` in browser
-
-Start other microservices
-- Project (runs on port 8081)
